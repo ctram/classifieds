@@ -1,6 +1,9 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user, :login, :who_is_logged_in?
   before_action :verify_user_logged_in
+  before_action :set_web_app_settings
+
+  private
 
   def verify_user_logged_in
     redirect_to '/sign-in' unless current_user
@@ -26,5 +29,13 @@ class ApplicationController < ActionController::Base
   def logout
     session[:user_id] = nil
     @current_user = nil
+  end
+
+  def set_web_app_settings
+    @web_app_settings ||= WebAppSetting.first
+
+    unless @web_app_settings
+      @web_app_settings = WebAppSetting.create!(web_app_title: 'Classifieds')
+    end
   end
 end
