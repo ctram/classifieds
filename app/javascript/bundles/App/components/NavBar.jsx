@@ -32,13 +32,13 @@ class NavBar extends React.Component {
   }
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, appName } = this.props;
 
     let homePageTo = currentUser ? '/' : '/sign-in';
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <Link className="navbar-brand" href="#" to={homePageTo} onClick={this.resetAlertBar}>Habit Tracker</Link>
+          <Link className="navbar-brand" href="#" to={homePageTo} onClick={this.resetAlertBar}>{appName}</Link>
 
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -83,7 +83,8 @@ NavBar.propTypes = {
 };
 
 NavBar.defaultProps = {
-  currentUser: {}
+  currentUser: {},
+  appName: 'Classifieds'
 };
 
 export default withRouter(NavBar);
