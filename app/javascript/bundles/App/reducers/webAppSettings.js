@@ -1,5 +1,10 @@
-import { SET_CURRENT_USER } from '../constants/constants';
+import { SET_WEB_APP_SETTINGS } from '../constants/constants';
 
-export default (state = { WebAppSettings: {} }, action) => {
-  return Object.assign({})
+export default (state = { webAppSettings: {} }, action) => {
+  switch(action.type) {
+    case SET_WEB_APP_SETTINGS:
+      return Object.assign({}, state.webAppSettings, action.webAppSettings);
+    default:
+      return state;
+  }
 };
