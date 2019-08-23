@@ -77,7 +77,7 @@ export default class App extends React.Component {
                 }
                 {
                   currentUser
-                    && <Route exact path={`/users/${currentUser.id}`} component={UserPage} />
+                    && <Route exact path={`/user-settings`} component={UserPage} />
                 }
                 {
                   // don't show 404 pages until client at least tried to authenticate,
