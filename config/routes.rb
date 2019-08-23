@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     end
   end
 
+  patch '/web_app_settings', to: 'web_app_settings#update'
+
   resources :sessions, only: [:create]
   get '/sessions', to: 'sessions#authenticate'
   delete '/sessions', to: 'sessions#destroy'
