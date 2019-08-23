@@ -47,16 +47,20 @@ class NavBar extends React.Component {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
               {
-                currentUser && <li class="nav-item">
-                  <li className="nav-link font-weight-bold dropdown-toggle"
+                currentUser && <li className="nav-item">
+                  <span className="nav-link font-weight-bold dropdown-toggle"
                         href="#"
                         data-toggle="dropdown">
                     {currentUser.email}
-                  </li>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <Link class="dropdown-item" href="#" to="/user-settings" onClick={this.resetAlertBar}>User Settings</Link>
-                    <div class="dropdown-divider"></div>
-                    <Link class="dropdown-item" href="#" onClick={this.signOut}>Sign Out</Link>
+                  </span>
+                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <Link className="dropdown-item" href="#" to="/user-settings" onClick={this.resetAlertBar}>User Settings</Link>
+                    {
+                      currentUser.role === 'admin'
+                        && <Link className="dropdown-item" href="#" to="/application-settings">Application Settings</Link>
+                    }
+                    <div className="dropdown-divider"></div>
+                    <a className="dropdown-item" href="#" onClick={this.signOut}>Sign Out</a>
                   </div>
                 </li>
               }
