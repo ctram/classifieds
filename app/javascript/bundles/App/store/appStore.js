@@ -3,7 +3,11 @@ import appReducer from '../reducers/indexReducer';
 import thunk from 'redux-thunk';
 
 const configureStore = (railsProps) => {
-  return createStore(appReducer, railsProps, applyMiddleware(thunk))
+  const initialState = {
+    webAppSettings: railsProps.web_app_settings
+  };
+  
+  return createStore(appReducer, initialState, applyMiddleware(thunk))
 };
 
 export default configureStore;
