@@ -25,7 +25,7 @@ class SessionsController < ApplicationController
     return render(status: 200, json: { message: 'user_not_signed_in' }) unless current_user
 
     render(status: 200, json: {
-      user: current_user.slice(:email, :id),
+      user: current_user.slice(:email, :id, :role),
       message: 'user_signed_in'
     })
   end
