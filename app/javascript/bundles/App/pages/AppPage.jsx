@@ -12,6 +12,8 @@ import AlertBar from '../components/AlertBar';
 import AddHabitPageContainer from '../containers/AddHabitPageContainer';
 import HabitPage from '../pages/HabitPage';
 import UserPage from '../pages/UserPage';
+import ApplicationSettingsPage from '../pages/ApplicationSettingsPage';
+
 import Spinner from '../components/Spinner';
 
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
@@ -78,6 +80,10 @@ export default class App extends React.Component {
                 {
                   currentUser
                     && <Route exact path={`/user-settings`} component={UserPage} />
+                }
+                {
+                  currentUser
+                    && <Route exact path={`/application-settings`} component={ApplicationSettingsPage} />
                 }
                 {
                   // don't show 404 pages until client at least tried to authenticate,
