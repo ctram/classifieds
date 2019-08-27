@@ -6,16 +6,16 @@ import { setCurrentAlert } from './alertsActionCreators';
 import { SET_WEB_APP_SETTINGS } from '../constants/constants';
 
 export function setWebAppSettings(webAppSettings) {
-  return { type: SET_WEB_APP_SETTINGS, webAppSettings }
+  return { type: SET_WEB_APP_SETTINGS, webAppSettings };
 }
 
 export function updateWebAppSettings(webAppSettings) {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(startSpinner());
 
     return fetchPlus(`${SERVER_DOMAIN}/web_app_settings`, {
       method: 'PATCH',
-      body: JSON.stringify({ web_app_setting: webAppSettings })
+      body: JSON.stringify({ web_app_setting: webAppSettings }),
     })
       .then(({ json, res }) => {
         let errors = json.errors;
@@ -45,6 +45,6 @@ export function updateWebAppSettings(webAppSettings) {
       })
       .finally(() => {
         dispatch(endSpinner());
-      })
+      });
   };
 }

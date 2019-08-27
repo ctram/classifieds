@@ -5,9 +5,6 @@ import { parseErrors } from '../../../helpers/response-helper';
 const ALERT_TYPES = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
 
 class AlertBar extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     let { alertType, message } = this.props;
