@@ -1,21 +1,18 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import React from 'react';
+import React from "react";
 
-import {
-  BrowserRouter as Router, Route, Switch,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { authenticateUser } from '../actions/usersActionCreators';
+import { authenticateUser } from "../actions/usersActionCreators";
 
-import MissingEntityPage from './MissingEntityPage';
-import SignInPage from './SignInPage';
-import NavBarContainer from '../containers/NavBarContainer';
-import AlertBar from '../components/AlertBar';
-import UserPage from './UserPage';
-import ApplicationSettingsPage from './ApplicationSettingsPage';
-
-import Spinner from '../components/Spinner';
+import MissingEntityPage from "./MissingEntityPage";
+import SignInPage from "./SignInPage";
+import NavBarContainer from "../containers/NavBarContainer";
+import AlertBar from "../components/AlertBar";
+import UserPage from "./UserPage";
+import ApplicationSettingsPage from "./ApplicationSettingsPage";
+import Spinner from "../components/Spinner";
 
 class App extends React.Component {
   constructor(props) {
@@ -27,7 +24,7 @@ class App extends React.Component {
 
   componentDidMount() {
     return this.authenticateUser()
-      .catch((e) => console.error(e))
+      .catch(e => console.error(e))
       .finally(() => {
         this.setState({ attemptedAuthentication: true });
       });
@@ -35,13 +32,11 @@ class App extends React.Component {
 
   authenticateUser() {
     const { dispatch } = this.props;
-    return dispatch(authenticateUser()).catch((e) => console.warn(e));
+    return dispatch(authenticateUser()).catch(e => console.warn(e));
   }
 
   render() {
-    const {
-      alert, currentUser, showSpinner,
-    } = this.props;
+    const { alert, currentUser, showSpinner } = this.props;
 
     const { attemptedAuthentication } = this.state;
 
@@ -76,8 +71,7 @@ class App extends React.Component {
             // be considered 404s
             attemptedAuthentication && (
               <Route path="/" component={MissingEntityPage} />
-            )
-}
+            )}
           </Switch>
         </div>
       </Router>
