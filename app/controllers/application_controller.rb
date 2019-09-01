@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user, :login, :who_is_logged_in?
+  
   before_action :verify_user_logged_in
   before_action :set_web_app_settings
 
