@@ -1,5 +1,4 @@
 import fetchPlus from '../../../helpers/fetch-plus';
-import { fetchHabits } from './habitsActionCreators';
 import { startSpinner, endSpinner } from './spinnersActionCreators';
 import { setCurrentAlert } from './alertsActionCreators';
 import { translateResponseMessage } from '../../../helpers/response-helper';
@@ -24,8 +23,7 @@ export function signIn(email, password) {
 
       if (res.status === 200) {
         dispatch(setCurrentUser(json.user));
-        dispatch(setCurrentAlert('success', message));
-        return dispatch(fetchHabits(json.user));
+        return dispatch(setCurrentAlert('success', message));
       }
 
       throw(message);
