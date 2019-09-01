@@ -13,6 +13,7 @@ import AlertBar from "../components/AlertBar";
 import UserPage from "./UserPage";
 import ApplicationSettingsPage from "./ApplicationSettingsPage";
 import Spinner from "../components/Spinner";
+import Dashboard from "../components/Dashboard";
 
 class App extends React.Component {
   constructor(props) {
@@ -66,6 +67,7 @@ class App extends React.Component {
                 component={ApplicationSettingsPage}
               />
             )}
+            {currentUser && <Dashboard />}
             {// don't show 404 pages until client at least tried to authenticate,
             // once authenticate attempt has concluded, we'll know what urls should
             // be considered 404s
