@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   helper_method :current_user, :login, :who_is_logged_in?
-  
+
   before_action :verify_user_logged_in
   before_action :set_web_app_settings
 
@@ -11,11 +13,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-      if session[:user_id]
-          @current_user ||= User.find(session[:user_id])
-      else
-          @current_user = nil
-      end
+    if session[:user_id]
+      @current_user ||= User.find(session[:user_id])
+    else
+      @current_user = nil
+    end
   end
 
   def login(user)
@@ -35,8 +37,6 @@ class ApplicationController < ActionController::Base
   def set_web_app_settings
     @web_app_settings ||= WebAppSetting.first
 
-    unless @web_app_settings
-      @web_app_settings = WebAppSetting.create!(web_app_title: 'Classifieds')
-    end
+    @web_app_settings ||= WebAppSetting.create!(web_app_title: 'Classifieds')
   end
 end
