@@ -103,9 +103,10 @@ export default class ClassifiedAttributesForm extends React.Component {
               className="form-control"
               id="classified-model-type"
               placeholder="Cat"
+              required
             />
           </div>
-          <div className="mb-3">
+          <div className="my-5">
             {domAttributes && (
               <div className="mb-3">
                 <hr />

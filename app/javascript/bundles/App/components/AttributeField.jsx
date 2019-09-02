@@ -13,7 +13,8 @@ class AttributeField extends React.Component {
       disabled: disabled === true ? true : false
     };
 
-    this.updateValue = this.updateValue.bind(this);
+    this.onChangeValue = this.onChangeValue.bind(this);
+    this.onChangeSelect = this.onChangeSelect.bind(this);
     this.remove = this.remove.bind(this);
   }
 
@@ -30,7 +31,7 @@ class AttributeField extends React.Component {
     }
   }
 
-  updateValue(e) {
+  onChangeValue(e) {
     const { onChange, id } = this.props;
 
     onChange(id, { value: e.target.value });
@@ -53,24 +54,6 @@ class AttributeField extends React.Component {
 
     const { id } = this.props;
 
-    let domField = null;
-
-    switch (type) {
-      case "text":
-        domField = (
-          <input
-            value={value}
-            onChange={this.updateValue}
-            className="form-control"
-            placeholder="Height"
-            disabled={disabled}
-            required
-          />
-        );
-      default:
-        null;
-    }
-
     const domId = `attribute-field-${id}`;
 
     return (
@@ -86,6 +69,20 @@ class AttributeField extends React.Component {
           </button>
         )}
         <div className="form-group">
+          <label htmlFor="attribute-name">
+            Attribute Name
+          </label>
+          <input
+            value={value}
+            onChange={this.onChangeValue}
+            className="form-control"
+            placeholder="Height"
+            disabled={disabled}
+            id="attribute-name"
+            required
+          />
+        </div>
+        <div className="form-group">
           <label htmlFor={domId}>Attribute Type</label>
           <select
             value={type}
@@ -95,9 +92,9 @@ class AttributeField extends React.Component {
             disabled={disabled}
           >
             <option value="text">Text</option>
+            <option value="number">Number</option>
           </select>
         </div>
-        <div className="form-group">{domField}</div>
       </div>
     );
   }
