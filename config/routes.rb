@@ -1,11 +1,6 @@
 Rails.application.routes.draw do
-  resources :users, only: [:create, :update] do
-    resources :habits do
-      member do
-        post '/update_habit_completed_for_date', to: 'habits#update_habit_completed_for_date'
-      end
-    end
-  end
+  resources :users, only: [:create, :update]
+  resources :classified_types, only: [:create, :index]
 
   patch '/web_app_settings', to: 'web_app_settings#update'
 
