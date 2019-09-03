@@ -11,7 +11,7 @@ import SignInPage from "./SignInPage";
 import NavBarContainer from "../containers/NavBarContainer";
 import AlertBar from "../components/AlertBar";
 import UserPage from "./UserPage";
-import ApplicationSettingsPage from "./ApplicationSettingsPage";
+import ApplicationSettingsPageContainer from "../containers/ApplicationSettingsPageContainer";
 import Spinner from "../components/Spinner";
 import Dashboard from "../components/Dashboard";
 
@@ -25,7 +25,7 @@ class App extends React.Component {
 
   componentDidMount() {
     return this.authenticateUser()
-      .catch(e => console.error(e))
+      .catch((e) => console.error(e))
       .finally(() => {
         this.setState({ attemptedAuthentication: true });
       });
@@ -33,7 +33,7 @@ class App extends React.Component {
 
   authenticateUser() {
     const { dispatch } = this.props;
-    return dispatch(authenticateUser()).catch(e => console.warn(e));
+    return dispatch(authenticateUser()).catch((e) => console.warn(e));
   }
 
   render() {
@@ -64,7 +64,7 @@ class App extends React.Component {
               <Route
                 exact
                 path="/application-settings"
-                component={ApplicationSettingsPage}
+                component={ApplicationSettingsPageContainer}
               />
             )}
             {currentUser && <Dashboard />}
@@ -73,7 +73,8 @@ class App extends React.Component {
             // be considered 404s
             attemptedAuthentication && (
               <Route path="/" component={MissingEntityPage} />
-            )}
+            )
+}
           </Switch>
         </div>
       </Router>
@@ -84,17 +85,17 @@ class App extends React.Component {
 App.propTypes = {
   alert: PropTypes.shape({
     alertType: PropTypes.string,
-    message: PropTypes.string
+    message: PropTypes.string,
   }),
   currentUser: PropTypes.shape({}),
   showSpinner: PropTypes.bool,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 };
 
 App.defaultProps = {
   alert: {},
   currentUser: {},
-  showSpinner: false
+  showSpinner: false,
 };
 
 export default App;
