@@ -36,7 +36,6 @@ class ApplicationController < ActionController::Base
 
   def set_web_app_settings
     @web_app_settings ||= WebAppSetting.first
-
     @web_app_settings ||= WebAppSetting.create!(web_app_title: 'Classifieds')
   end
 end
