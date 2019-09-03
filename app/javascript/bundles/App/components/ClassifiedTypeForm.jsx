@@ -1,39 +1,36 @@
-// import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React from "react";
 
 import AttributeField from "./AttributeField";
 
+import { createClassifiedType } from "../actions/classifiedTypesActionCreators";
+
 const defaultAttribute = { type: "text", value: "Name", disabled: true };
 
-export default class ClassifiedTypeForm extends React.Component {
+class ClassifiedTypeForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      attributes: [defaultAttribute],
-    };
+    const { name, attributes } = props;
+
+    this.state = { attributes, name };
 
     this.addAttributeToDOM = this.addAttributeToDOM.bind(this);
     this.onRemoveAttribute = this.onRemoveAttribute.bind(this);
     this.onChangeAttribute = this.onChangeAttribute.bind(this);
-  }
-
-  addAttributeToDOM() {
-    const { attributes } = this.state;
-
-    attributes.push({ value: "", disabled: false, type: "text" });
-
-    this.setState({ attributes });
+    this.onChangeName = this.onChangeName.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onChangeAttribute(id, data) {
-    const { attributes } = this.state;
+    let { attributes } = this.state;
 
-    attributes.some((attribute, idx) => {
+    attributes = attributes.map((attribute, idx) => {
       if (idx === id) {
-        attribute = Object.assign(attribute, data);
-        return true;
+        return { ...attribute, ...data };
       }
+
+      return attribute;
     });
 
     this.setState({ attributes });
@@ -47,8 +44,37 @@ export default class ClassifiedTypeForm extends React.Component {
     this.setState({ attributes });
   }
 
-  render() {
+  onChangeName(e) {
+    this.setState({ name: e.target.value });
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+
+    const { dispatch } = this.props;
+    const { name, attributes } = this.state;
+
+    const classifiedType = { name, attributes };
+
+    dispatch(createClassifiedType(classifiedType))
+      .then(() => {
+        this.setState({ name: '', attributes: [defaultAttribute] });
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }
+
+  addAttributeToDOM() {
     const { attributes } = this.state;
+
+    attributes.push({ value: "", disabled: false, type: "text" });
+
+    this.setState({ attributes });
+  }
+
+  render() {
+    const { attributes, name } = this.state;
 
     let domAttributes = null;
 
@@ -94,10 +120,12 @@ export default class ClassifiedTypeForm extends React.Component {
 
     return (
       <div>
-        <form>
+        <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label htmlFor="classified-model-type">Type</label>
             <input
+              value={name}
+              onChange={this.onChangeName}
               className="form-control"
               id="classified-model-type"
               placeholder="Cat"
@@ -119,7 +147,10 @@ export default class ClassifiedTypeForm extends React.Component {
               Add Attribute
             </button>
           </div>
-          <button type="submit" className="btn btn-primary">
+          <button
+            type="submit"
+            className="btn btn-primary"
+          >
             Add Classified Type
           </button>
         </form>
@@ -127,3 +158,16 @@ export default class ClassifiedTypeForm extends React.Component {
     );
   }
 }
+
+ClassifiedTypeForm.propTypes = {
+  name: PropTypes.string,
+  attributes: PropTypes.instanceOf(Array),
+  dispatch: PropTypes.func.isRequired
+};
+
+ClassifiedTypeForm.defaultProps = {
+  name: "",
+  attributes: [defaultAttribute]
+};
+
+export default ClassifiedTypeForm;
