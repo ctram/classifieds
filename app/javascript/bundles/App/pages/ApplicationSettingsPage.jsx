@@ -22,22 +22,18 @@ class ApplicationSettingsPage extends React.Component {
     const { dispatch } = this.props;
 
     dispatch(fetchClassifiedTypes())
-      .then((classifiedTypes) => {
-        // this.setState({ classifiedTypes });
-        // console.log(classifiedTypes)
-        console.log('got the classifiedTypes')
-      })
       .catch((e) => console.error(e));
   }
 
   render() {
     const { showClassifiedTypeForm, classifiedTypes } = this.state;
+    const { webAppSettings } = this.props;
 
     console.log(classifiedTypes);
 
     return (
       <div className="d-flex flex-column align-items-center">
-        <ApplicationNameFormContainer {...this.props} />
+        <ApplicationNameFormContainer webAppSettings={webAppSettings} />
         <hr />
         <div>
           <h2 className="mb-5">Classified Types</h2>
@@ -51,7 +47,9 @@ class ApplicationSettingsPage extends React.Component {
 }
 
 ApplicationSettingsPage.propTypes = {
-  classifiedTypes: PropTypes.instanceOf(Array)
+  classifiedTypes: PropTypes.instanceOf(Array),
+  dispatch: PropTypes.func.isRequired,
+  webAppSettings: PropTypes.instanceOf(Object).isRequired
 };
 
 ApplicationSettingsPage.defaultProps = {
