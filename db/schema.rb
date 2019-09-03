@@ -10,10 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_02_003504) do
+ActiveRecord::Schema.define(version: 2019_09_03_034537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "classified_attributes", force: :cascade do |t|
+    t.integer "classified_id"
+    t.integer "classified_type_attribute_id"
+    t.string "value"
+    t.string "data_type"
+    t.string "name"
+  end
+
+  create_table "classified_type_attributes", force: :cascade do |t|
+    t.integer "classified_type_id"
+    t.string "name"
+    t.string "data_type"
+  end
+
+  create_table "classified_types", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "classifieds", force: :cascade do |t|
+    t.integer "classified_type_id"
+    t.string "name"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email"
