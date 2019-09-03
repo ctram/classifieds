@@ -19,7 +19,7 @@ const MAP = {
   user_not_signed_in: 'user not signed in',
   user_signed_in: 'user signed in',
   user_sign_out_successful: 'successfully signed out',
-  user_sign_out_error: 'sign out failed'
+  user_sign_out_error: 'sign out failed',
 };
 
 export function translateResponseMessage(message) {
@@ -34,15 +34,15 @@ export function translateResponseMessage(message) {
 
 export function parseErrors(errors) {
   if (Object.getPrototypeOf(errors) !== Object.prototype) {
-    throw('"errors" argument should be an object');
+    console.warn('"errors" argument should be an object');
   }
 
-  let res = []
+  const res = [];
 
-  for (let attr in errors) {
-    let arr = errors[attr];
+  for (const attr in errors) {
+    const arr = errors[attr];
 
-    for (let error of arr) {
+    for (const error of arr) {
       res.push(`${attr} ${error}`);
     }
   }

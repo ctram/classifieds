@@ -5,13 +5,12 @@ import { parseErrors } from '../../../helpers/response-helper';
 const ALERT_TYPES = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
 
 class AlertBar extends React.Component {
-
   render() {
     let { alertType, message } = this.props;
 
     if (ALERT_TYPES.indexOf(alertType) === -1) {
       alertType = 'primary';
-      console.warn(`Alert type "${alertType}" is not recognized. Defaulting to type "primary".`)
+      console.warn(`Alert type "${alertType}" is not recognized. Defaulting to type "primary".`);
     }
 
     if (Object.getPrototypeOf(message) === Object.prototype) {
@@ -22,9 +21,11 @@ class AlertBar extends React.Component {
         return acc;
       }, []);
 
-      message = <ul>
-        {message}
-      </ul>;
+      message = (
+        <ul>
+          {message}
+        </ul>
+      );
     }
 
     return (
@@ -42,8 +43,8 @@ AlertBar.propTypes = {
   message: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.string),
-    PropTypes.object
-  ]).isRequired
+    PropTypes.object,
+  ]).isRequired,
 };
 
 export default AlertBar;

@@ -18,7 +18,7 @@ export function updateWebAppSettings(webAppSettings) {
       body: JSON.stringify({ web_app_setting: webAppSettings }),
     })
       .then(({ json, res }) => {
-        let errors = json.errors;
+        const { errors } = json;
 
         if (res.status === 200) {
           dispatch(setWebAppSettings(json.web_app_settings));
@@ -34,12 +34,12 @@ export function updateWebAppSettings(webAppSettings) {
         }
 
         if (errors) {
-          throw(errors);
+          throw (errors);
         }
 
-        throw(message);
+        throw (message);
       })
-      .catch(e => {
+      .catch((e) => {
         dispatch(setCurrentAlert('danger', e));
         console.error(e);
       })

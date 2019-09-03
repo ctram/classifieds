@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import fetchPlus from '../../../helpers/fetch-plus';
 import { withRouter } from 'react-router';
+import fetchPlus from '../../../helpers/fetch-plus';
 import * as usersActionCreators from '../actions/usersActionCreators';
-import {setCurrentAlert } from '../actions/alertsActionCreators';
+import { setCurrentAlert } from '../actions/alertsActionCreators';
 
 class SignInForm extends React.Component {
   constructor(props) {
@@ -37,59 +37,61 @@ class SignInForm extends React.Component {
       .then(() => {
         this.props.history.push('/');
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
       });
   }
 
   signUp(email, password) {
-    let status = null;
+    const status = null;
     const { dispatch } = this.props;
 
     dispatch(usersActionCreators.signUp(email, password))
-      .then(res => {
+      .then((res) => {
         this.props.history.push('/sign-in');
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
       });
   }
 
   render() {
-    const submitBtnText = this.props.type === 'sign-up' ? 'Sign Up' : 'Sign In'
+    const submitBtnText = this.props.type === 'sign-up' ? 'Sign Up' : 'Sign In';
 
     return (
-        <form onSubmit={this.submit}>
-            <div className="form-group">
-                <label htmlFor="email">Email address</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  placeholder="Enter Email"
-                  ref={this.emailInput}
-                  required />
-            </div>
-            <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  placeholder="Password"
-                  ref={this.passwordInput}
-                  required />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              {submitBtnText}
-            </button>
-        </form>
+      <form onSubmit={this.submit}>
+        <div className="form-group">
+          <label htmlFor="email">Email address</label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            placeholder="Enter Email"
+            ref={this.emailInput}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            placeholder="Password"
+            ref={this.passwordInput}
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          {submitBtnText}
+        </button>
+      </form>
     );
   }
 }
 
 SignInForm.propTypes = {
-  type: PropTypes.string
-}
+  type: PropTypes.string,
+};
 
 export default withRouter(SignInForm);

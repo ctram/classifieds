@@ -5,12 +5,12 @@ class AttributeField extends React.Component {
   constructor(props) {
     super(props);
 
-    let { type, value, disabled } = props;
+    const { type, value, disabled } = props;
 
     this.state = {
       type: type || "text",
       value: value || "",
-      disabled: disabled === true ? true : false
+      disabled: disabled === true,
     };
 
     this.onChangeValue = this.onChangeValue.bind(this);
@@ -22,7 +22,7 @@ class AttributeField extends React.Component {
     const {
       type: prevType,
       value: prevValue,
-      disabled: prevDisabled
+      disabled: prevDisabled,
     } = prevProps;
     const { type, value, disabled } = this.props;
 
@@ -104,13 +104,13 @@ AttributeField.propTypes = {
   type: PropTypes.string,
   value: PropTypes.string,
   disabled: PropTypes.bool,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 };
 
 AttributeField.defaultValues = {
   type: "text",
   value: "",
-  disabled: false
+  disabled: false,
 };
 
 export default AttributeField;

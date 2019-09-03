@@ -17,7 +17,7 @@ class ApplicationNameForm extends React.Component {
     const { dispatch } = this.props;
 
     const webAppSettings = {
-      web_app_title: this.inputApplicationName.current.value
+      web_app_title: this.inputApplicationName.current.value,
     };
 
     dispatch(updateWebAppSettings(webAppSettings));
@@ -60,9 +60,9 @@ ApplicationNameForm.defaultValues = {};
 
 ApplicationNameForm.propTypes = {
   webAppSettings: PropTypes.shape({
-    web_app_title: PropTypes.string.isRequired
+    web_app_title: PropTypes.string.isRequired,
   }).isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default ApplicationNameForm;

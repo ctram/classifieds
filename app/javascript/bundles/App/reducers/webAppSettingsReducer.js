@@ -1,9 +1,9 @@
 import { SET_WEB_APP_SETTINGS } from '../constants/constants';
 
 export default (state = { webAppSettings: {} }, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case SET_WEB_APP_SETTINGS:
-      return Object.assign({}, state.webAppSettings, action.webAppSettings);
+      return { ...state.webAppSettings, ...action.webAppSettings };
     default:
       return state;
   }
