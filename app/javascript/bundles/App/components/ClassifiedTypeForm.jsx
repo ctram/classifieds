@@ -5,12 +5,12 @@ import AttributeField from "./AttributeField";
 
 const defaultAttribute = { type: "text", value: "Name", disabled: true };
 
-export default class ClassifiedAttributesForm extends React.Component {
+export default class ClassifiedTypeForm extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      attributes: [defaultAttribute]
+      attributes: [defaultAttribute],
     };
 
     this.addAttributeToDOM = this.addAttributeToDOM.bind(this);
@@ -19,7 +19,7 @@ export default class ClassifiedAttributesForm extends React.Component {
   }
 
   addAttributeToDOM() {
-    let { attributes } = this.state;
+    const { attributes } = this.state;
 
     attributes.push({ value: "", disabled: false, type: "text" });
 
@@ -27,7 +27,7 @@ export default class ClassifiedAttributesForm extends React.Component {
   }
 
   onChangeAttribute(id, data) {
-    let { attributes } = this.state;
+    const { attributes } = this.state;
 
     attributes.some((attribute, idx) => {
       if (idx === id) {
@@ -42,9 +42,7 @@ export default class ClassifiedAttributesForm extends React.Component {
   onRemoveAttribute(id) {
     let { attributes } = this.state;
 
-    attributes = attributes.filter((attribute, idx) => {
-      return idx !== id;
-    });
+    attributes = attributes.filter((attribute, idx) => idx !== id);
 
     this.setState({ attributes });
   }
