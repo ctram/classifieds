@@ -11,21 +11,17 @@ class ClassifiedTypesController < ApplicationController
   def create
     ActiveRecord::Base.transaction do
       name = classified_type_params[:name]
-      classified_type = ClassifiedType.create(name: name)
-
-      raise classified_type.errors.messages unless classified_type.valid?
+      classified_type = ClassifiedType.create!(name: name)
 
       attributes = classified_type_params[:attributes].map do |attr|
-        # binding.pry
-        classified_type.classified_type_attributes.create(attr)
+        classified_type.classified_type_attributes.create!(attr)
       end
-    end
-    # binding.pry
 
-    render(status: 201, json: { classified_type: {
-             name: classified_type.name,
-             attributes: attributes
-           } })
+      render(status: 201, json: { classified_type: {
+               name: classified_type.name,
+               attributes: attributes
+             } })
+    end
   rescue StandardError => e
     render(status: 400, json: {
              message: 'error_creating_classified_type',
