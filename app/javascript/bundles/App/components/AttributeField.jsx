@@ -5,15 +5,15 @@ class AttributeField extends React.Component {
   constructor(props) {
     super(props);
 
-    const { type, value, disabled } = props;
+    const { type, name, disabled } = props;
 
     this.state = {
       type: type || "text",
-      value: value || "",
+      name: name || "",
       disabled: disabled === true,
     };
 
-    this.onChangeValue = this.onChangeValue.bind(this);
+    this.onChangeName = this.onChangeName.bind(this);
     this.onChangeSelect = this.onChangeSelect.bind(this);
     this.remove = this.remove.bind(this);
   }
@@ -21,26 +21,20 @@ class AttributeField extends React.Component {
   componentDidUpdate(prevProps) {
     const {
       type: prevType,
-      value: prevValue,
+      name: prevName,
       disabled: prevDisabled,
     } = prevProps;
-    const { type, value, disabled } = this.props;
+    const { type, name, disabled } = this.props;
 
-    if (prevType !== type || prevValue !== value || prevDisabled !== disabled) {
-      this.setState({ type, value, disabled });
+    if (prevType !== type || prevName !== name || prevDisabled !== disabled) {
+      this.setState({ type, name, disabled });
     }
   }
 
-  onChangeValue(e) {
+  onChangeName(e) {
     const { onChange, id } = this.props;
 
-    onChange(id, { value: e.target.value });
-  }
-
-  remove(e) {
-    const { onRemove, id } = this.props;
-
-    onRemove(id);
+    onChange(id, { name: e.target.value });
   }
 
   onChangeSelect(e) {
@@ -49,8 +43,14 @@ class AttributeField extends React.Component {
     onChange(id, { type: e.target.value });
   }
 
+  remove(e) {
+    const { onRemove, id } = this.props;
+
+    onRemove(id);
+  }
+
   render() {
-    const { type, value, disabled } = this.state;
+    const { type, name, disabled } = this.state;
 
     const { id } = this.props;
 
@@ -69,12 +69,10 @@ class AttributeField extends React.Component {
           </button>
         )}
         <div className="form-group">
-          <label htmlFor="attribute-name">
-            Attribute Name
-          </label>
+          <label htmlFor="attribute-name">Attribute Name</label>
           <input
-            value={value}
-            onChange={this.onChangeValue}
+            value={name}
+            onChange={this.onChangeName}
             className="form-control"
             placeholder="Height"
             disabled={disabled}
@@ -101,16 +99,12 @@ class AttributeField extends React.Component {
 }
 
 AttributeField.propTypes = {
-  type: PropTypes.string,
-  value: PropTypes.string,
-  disabled: PropTypes.bool,
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
-};
-
-AttributeField.defaultValues = {
-  type: "text",
-  value: "",
-  disabled: false,
+  onRemove: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default AttributeField;

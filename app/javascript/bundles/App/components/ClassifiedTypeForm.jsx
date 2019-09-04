@@ -5,7 +5,7 @@ import AttributeField from "./AttributeField";
 
 import { createClassifiedType } from "../actions/classifiedTypesActionCreators";
 
-const defaultAttribute = { type: "text", value: "Name", disabled: true };
+const defaultAttribute = { type: "text", name: "Name", disabled: true };
 
 class ClassifiedTypeForm extends React.Component {
   constructor(props) {
@@ -60,15 +60,15 @@ class ClassifiedTypeForm extends React.Component {
       .then(() => {
         this.setState({ name: '', attributes: [defaultAttribute] });
       })
-      .catch((e) => {
-        console.error(e);
+      .catch((error) => {
+        console.error(error);
       });
   }
 
   addAttributeToDOM() {
     const { attributes } = this.state;
 
-    attributes.push({ value: "", disabled: false, type: "text" });
+    attributes.push({ name: "", disabled: false, type: "text" });
 
     this.setState({ attributes });
   }
@@ -80,7 +80,7 @@ class ClassifiedTypeForm extends React.Component {
 
     if (attributes.length !== 0) {
       domAttributes = attributes.map((attribute, idx) => {
-        const { type, value, disabled } = attribute;
+        const { type, name: attributeName, disabled } = attribute;
 
         let dom;
 
@@ -89,7 +89,7 @@ class ClassifiedTypeForm extends React.Component {
             onRemove={this.onRemoveAttribute}
             onChange={this.onChangeAttribute}
             type={type}
-            value={value}
+            name={attributeName}
             disabled={disabled}
             id={idx}
           />
@@ -162,12 +162,12 @@ class ClassifiedTypeForm extends React.Component {
 ClassifiedTypeForm.propTypes = {
   name: PropTypes.string,
   attributes: PropTypes.instanceOf(Array),
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 };
 
 ClassifiedTypeForm.defaultProps = {
   name: "",
-  attributes: [defaultAttribute]
+  attributes: [defaultAttribute],
 };
 
 export default ClassifiedTypeForm;

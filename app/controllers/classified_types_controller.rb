@@ -22,7 +22,6 @@ class ClassifiedTypesController < ApplicationController
       attributes = classified_type.create_attributes(attributes)
     end
 
-
     render(status: 201, json: { classified_type: {
              name: classified_type.name,
              attributes: attributes
@@ -38,7 +37,7 @@ class ClassifiedTypesController < ApplicationController
   private
 
   def classified_type_params
-    params.require(:classified_type).permit(:name, attributes: [ :value, :type ])
+    params.require(:classified_type).permit(:name, attributes: [ :name, :data_type ])
   end
 
   def check_is_admin
