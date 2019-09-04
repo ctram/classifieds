@@ -17,8 +17,6 @@ export function fetchClassifiedTypes() {
       method: "GET",
     })
       .then(({ json, res }) => {
-
-
         const { errors } = json;
         const message = translateResponseMessage(json.message);
 
@@ -33,7 +31,6 @@ export function fetchClassifiedTypes() {
         throw message;
       })
       .catch((e) => {
-
         dispatch(setCurrentAlert("danger", e));
         console.error(e);
       })
@@ -47,9 +44,16 @@ export function createClassifiedType(classifiedType) {
   return (dispatch) => {
     dispatch(startSpinner());
 
+    let { attributes } = classifiedType;
+
+    attributes = attributes.map((attr) => {
+      const { name, type } = attr;
+      return { name, data_type: type };
+    });
+
     return fetchPlus(`${SERVER_DOMAIN}/classified_types`, {
       method: "POST",
-      body: JSON.stringify({ classified_type: classifiedType })
+      body: JSON.stringify({ classified_type: { ...classifiedType, attributes } }),
     })
       .then(({ json, res }) => {
         const { errors } = json;
