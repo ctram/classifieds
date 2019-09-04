@@ -57,9 +57,10 @@ export function createClassifiedType(classifiedType) {
     })
       .then(({ json, res }) => {
         const { errors } = json;
+
         const message = translateResponseMessage(json.message);
 
-        if (res.status === 200) {
+        if (res.status === 201) {
           return dispatch(fetchClassifiedTypes());
         }
 
@@ -68,10 +69,6 @@ export function createClassifiedType(classifiedType) {
         }
 
         throw message;
-      })
-      .catch((e) => {
-        dispatch(setCurrentAlert("danger", e));
-        console.error(e);
       })
       .finally(() => {
         dispatch(endSpinner());
