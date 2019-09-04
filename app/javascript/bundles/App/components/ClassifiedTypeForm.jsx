@@ -13,7 +13,7 @@ class ClassifiedTypeForm extends React.Component {
 
     const { name, attributes } = props;
 
-    this.state = { attributes, name };
+    this.state = { attributes, name, errorMsg: '' };
 
     this.addAttributeToDOM = this.addAttributeToDOM.bind(this);
     this.onRemoveAttribute = this.onRemoveAttribute.bind(this);
@@ -56,11 +56,14 @@ class ClassifiedTypeForm extends React.Component {
 
     const classifiedType = { name, attributes };
 
+    this.setState({ errorMsg: '' });
+
     dispatch(createClassifiedType(classifiedType))
       .then(() => {
         this.setState({ name: '', attributes: [defaultAttribute] });
       })
       .catch((error) => {
+        this.setState({ errorMsg: error });
         console.error(error);
       });
   }
@@ -74,7 +77,7 @@ class ClassifiedTypeForm extends React.Component {
   }
 
   render() {
-    const { attributes, name } = this.state;
+    const { attributes, name, errorMsg } = this.state;
 
     let domAttributes = null;
 
@@ -147,6 +150,15 @@ class ClassifiedTypeForm extends React.Component {
               Add Attribute
             </button>
           </div>
+          {
+            errorMsg && (
+              <div className="d-flex justify-content-center">
+                <div className="alert alert-danger text-center" role="alert">
+                  {errorMsg}
+                </div>
+              </div>
+            )
+          }
           <button
             type="submit"
             className="btn btn-primary"
