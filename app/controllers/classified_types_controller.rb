@@ -16,18 +16,17 @@ class ClassifiedTypesController < ApplicationController
       raise classified_type.errors.messages unless classified_type.valid?
 
       attributes = classified_type_params[:attributes].map do |attr|
-        { data_type: attr[:type], name: attr[:name] }
+        # binding.pry
+        classified_type.classified_type_attributes.create(attr)
       end
-
-      attributes = classified_type.create_attributes(attributes)
     end
+    # binding.pry
 
     render(status: 201, json: { classified_type: {
              name: classified_type.name,
              attributes: attributes
            } })
   rescue StandardError => e
-
     render(status: 400, json: {
              message: 'error_creating_classified_type',
              errors: e.message
@@ -37,7 +36,7 @@ class ClassifiedTypesController < ApplicationController
   private
 
   def classified_type_params
-    params.require(:classified_type).permit(:name, attributes: [ :name, :data_type ])
+    params.require(:classified_type).permit(:name, attributes: %i[name data_type])
   end
 
   def check_is_admin
