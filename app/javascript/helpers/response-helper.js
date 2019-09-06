@@ -29,7 +29,7 @@ export function translateResponseMessage(message) {
 
   console.error('Response message not recognized. You probably need to update the map in "response-helpers"');
 
-  return 'untranslated message, whoops';
+  return message;
 }
 
 export function parseErrors(errors) {
