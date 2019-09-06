@@ -57,7 +57,7 @@ class AttributeField extends React.Component {
     const domId = `attribute-field-${id}`;
 
     return (
-      <div>
+      <div className="attribute-field">
         {!disabled && (
           <button
             type="button"
@@ -68,8 +68,9 @@ class AttributeField extends React.Component {
             <span aria-hidden="true">&times;</span>
           </button>
         )}
+        <h4>Attribute</h4>
         <div className="form-group">
-          <label htmlFor="attribute-name">Attribute Name</label>
+          <label htmlFor="attribute-name">Name</label>
           <input
             value={name}
             onChange={this.onChangeName}
@@ -81,7 +82,7 @@ class AttributeField extends React.Component {
           />
         </div>
         <div className="form-group">
-          <label htmlFor={domId}>Attribute Type</label>
+          <label htmlFor={domId}>Type</label>
           <select
             value={type}
             onChange={this.onChangeSelect}
