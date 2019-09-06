@@ -98,8 +98,6 @@ class ClassifiedTypeForm extends React.Component {
       domAttributes = attributes.map((attribute, idx) => {
         const { type, name: attributeName, disabled } = attribute;
 
-        let dom;
-
         const domAttributeField = (
           <AttributeField
             onRemove={this.onRemoveAttribute}
@@ -111,26 +109,22 @@ class ClassifiedTypeForm extends React.Component {
           />
         );
 
-        if (idx === 0) {
-          dom = (
-            <div key={idx}>
-              <small className="form-text text-muted">
-                The "Name" attribute is set by default and cannot be changed or
-                removed.
-              </small>
-              {domAttributeField}
-            </div>
-          );
-        } else {
-          dom = (
-            <div key={idx}>
-              <hr />
+        let inner = domAttributeField;
+
+        if (idx !== 0) {
+          inner = (
+            <div>
+              <hr className="my-5"/>
               {domAttributeField}
             </div>
           );
         }
 
-        return dom;
+        return (
+          <div className="my-3" key={idx}>
+            {inner}
+          </div>
+        );
       });
     }
 
@@ -157,21 +151,12 @@ class ClassifiedTypeForm extends React.Component {
               required
             />
           </div>
-          <div className="my-5">
-            {domAttributes && (
-              <div className="mb-3">
-                <hr />
-                {domAttributes}
-              </div>
-            )}
-            <button
-              onClick={this.addAttributeToDOM}
-              type="button"
-              className="btn btn-secondary btn-sm"
-            >
-              Add Attribute
-            </button>
-          </div>
+          {domAttributes && (
+            <div>
+              <hr className="my-5" />
+              {domAttributes}
+            </div>
+          )}
           {
             errorMsg && (
               <div className="d-flex justify-content-center">
@@ -181,12 +166,23 @@ class ClassifiedTypeForm extends React.Component {
               </div>
             )
           }
-          <button
-            type="submit"
-            className="btn btn-primary"
-          >
-            Add Classified Type
-          </button>
+          <hr className="my-5" />
+          <div className="d-flex flex-column align-items-start">
+            <button
+              onClick={this.addAttributeToDOM}
+              type="button"
+              className="btn btn-secondary btn-sm mb-3"
+            >
+              Add Attribute
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary"
+            >
+              Save
+            </button>
+          </div>
+
         </form>
       </div>
     );

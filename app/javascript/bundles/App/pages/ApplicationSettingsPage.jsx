@@ -69,7 +69,8 @@ class ApplicationSettingsPage extends React.Component {
               id={id}
               name={name}
               attributes={attributes}
-              onRemove={this.onRemoveClassifiedType} />
+              onRemove={this.onRemoveClassifiedType}
+            />
           </div>
         );
       });
@@ -80,17 +81,41 @@ class ApplicationSettingsPage extends React.Component {
         <ApplicationNameFormContainer webAppSettings={webAppSettings} />
         <hr />
         <div>
-          <h2 className="mb-5">Classified Types</h2>
-          {(showClassifiedTypeForm && <ClassifiedTypeFormContainer id={1} />) || (
-            <button
-              onClick={this.showAddNewClassifiedTypeForm}
-              className="btn btn-primary"
-              type="button"
-            >
-              Add New Classified Type
-            </button>
+          <h2 className="mb-3">Classified Types</h2>
+          <div className="my-3">
+            <p>
+              A Classified Type represents a class of items.
+            </p>
+            <p>
+              Examples: Cat, Dog, Car, Clothing, etc.
+            </p>
+          </div>
+          {showClassifiedTypeForm && (
+            <div className="my-5 new-classified-type">
+              <ClassifiedTypeFormContainer id="new-classified-type" />
+            </div>
           )}
-          {domClassifiedTypes}
+
+          {
+            !showClassifiedTypeForm && (
+              <button
+                onClick={this.showAddNewClassifiedTypeForm}
+                className="btn btn-primary"
+                type="button"
+              >
+                Add New Classified Type
+              </button>
+            )
+          }
+
+          {
+            domClassifiedTypes && (
+            <div className="classified-types">
+              <hr />
+              {domClassifiedTypes}
+            </div>
+            )
+          }
         </div>
       </div>
     );
