@@ -13,7 +13,7 @@ export function fetchClassifiedTypes() {
   return (dispatch) => {
     dispatch(startSpinner());
 
-    return fetchPlus(`${SERVER_DOMAIN}/classified_types`, {
+    return fetchPlus(`${SERVER_DOMAIN}/api/v1/classified_types`, {
       method: "GET",
     })
       .then(({ json, res }) => {
