@@ -68,7 +68,7 @@ class ApplicationSettingsPage extends React.Component {
             <ClassifiedTypeFormContainer
               id={id}
               name={name}
-              attributes={attributes} 
+              attributes={attributes}
               onRemove={this.onRemoveClassifiedType} />
           </div>
         );

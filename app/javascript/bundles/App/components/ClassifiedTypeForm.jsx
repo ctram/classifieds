@@ -13,7 +13,9 @@ class ClassifiedTypeForm extends React.Component {
 
     const { name, attributes } = props;
 
-    this.state = { attributes, name, errorMsg: '' };
+    this.state = {
+      attributes, name, errorMsg: '', canDelete: false,
+    };
 
     this.addAttributeToDOM = this.addAttributeToDOM.bind(this);
     this.onRemoveAttribute = this.onRemoveAttribute.bind(this);
@@ -86,7 +88,9 @@ class ClassifiedTypeForm extends React.Component {
   }
 
   render() {
-    const { attributes, name, errorMsg } = this.state;
+    const {
+      attributes, name, errorMsg, canDelete,
+    } = this.state;
 
     let domAttributes = null;
 
@@ -131,10 +135,16 @@ class ClassifiedTypeForm extends React.Component {
     }
 
     return (
-      <div>
-        <button onClick={this.delete} type="button" className="close" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+      <div className="classified-type-form">
+        {
+          canDelete
+          && (
+          <button onClick={this.delete} type="button" className="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          )
+        }
+
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label htmlFor="classified-model-type">Type</label>
@@ -187,7 +197,7 @@ ClassifiedTypeForm.propTypes = {
   name: PropTypes.string,
   attributes: PropTypes.instanceOf(Array),
   dispatch: PropTypes.func.isRequired,
-  id: PropTypes.number.isRequired
+  id: PropTypes.number.isRequired,
 };
 
 ClassifiedTypeForm.defaultProps = {
