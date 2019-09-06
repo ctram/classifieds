@@ -104,7 +104,7 @@ AttributeField.propTypes = {
   disabled: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
 };
 
 export default AttributeField;

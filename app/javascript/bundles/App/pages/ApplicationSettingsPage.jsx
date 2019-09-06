@@ -20,12 +20,30 @@ class ApplicationSettingsPage extends React.Component {
     this.showAddNewClassifiedTypeForm = this.showAddNewClassifiedTypeForm.bind(
       this,
     );
+
+    this.onRemoveClassifiedType = this.onRemoveClassifiedType.bind(this);
   }
 
   componentDidMount() {
     const { dispatch } = this.props;
 
     dispatch(fetchClassifiedTypes()).catch((e) => console.error(e));
+  }
+
+  componentDidUpdate(prevProps) {
+    const { classifiedTypes } = this.props;
+
+    if (prevProps.classifiedTypes !== classifiedTypes) {
+      this.setState({ classifiedTypes });
+    }
+  }
+
+  onRemoveClassifiedType(id) {
+    let { classifiedTypes } = this.state;
+
+    classifiedTypes = classifiedTypes.filter((classifiedType, idx) => id !== idx);
+
+    this.setState({ classifiedTypes });
   }
 
   showAddNewClassifiedTypeForm() {
@@ -41,14 +59,17 @@ class ApplicationSettingsPage extends React.Component {
     let domClassifiedTypes = null;
 
     if (classifiedTypes.length > 0) {
-      domClassifiedTypes = classifiedTypes.map((classifiedType) => {
-        const { name, attributes } = classifiedType;
+      domClassifiedTypes = classifiedTypes.map((classifiedType, idx) => {
+        const { name, attributes, id } = classifiedType;
 
         return (
-          <div>
+          <div key={idx}>
             <hr />
-            <ClassifiedTypeFormContainer name={name} attributes={attributes} />
-            );
+            <ClassifiedTypeFormContainer
+              id={id}
+              name={name}
+              attributes={attributes} 
+              onRemove={this.onRemoveClassifiedType} />
           </div>
         );
       });
@@ -60,7 +81,7 @@ class ApplicationSettingsPage extends React.Component {
         <hr />
         <div>
           <h2 className="mb-5">Classified Types</h2>
-          {(showClassifiedTypeForm && <ClassifiedTypeFormContainer />) || (
+          {(showClassifiedTypeForm && <ClassifiedTypeFormContainer id={1} />) || (
             <button
               onClick={this.showAddNewClassifiedTypeForm}
               className="btn btn-primary"
