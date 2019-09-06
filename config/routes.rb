@@ -12,5 +12,7 @@ Rails.application.routes.draw do
 
   get '/sign-in', to: 'statics#sign_in'
 
+  mount ClassifiedsAPI::V1 => '/'
+
   get '*foo', to: 'statics#index'
 end
