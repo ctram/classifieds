@@ -19,6 +19,21 @@ module ClassifiedsAPI
       get do
         present classified_types: ClassifiedType.all, with: Entities::ClassifiedType
       end
+
+      desc 'Create and return a classified_type'
+      post do
+        name, attributes = params[:classified_type].values_at :name, :attributes
+
+        ActiveRecord::Base.transaction do
+          classified_type = ClassifiedType.create!(name: name)
+
+          attributes.each do |attr|
+            classified_type.classified_type_attributes.create!(attr)
+          end
+        end
+
+        present classified_type: classified_type, with: Entities::ClassifiedType
+      end
     end
   end
 end
