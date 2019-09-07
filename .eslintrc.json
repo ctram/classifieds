@@ -24,5 +24,6 @@
     "rules": {
 	"no-console": "off",
 	"quotes": "off"
+        "react/no-did-update-set-state": "off"
     }
 }
