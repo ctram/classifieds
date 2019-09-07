@@ -3,138 +3,111 @@ import React from "react";
 
 import GroupOfAttributes from './GroupOfAttributes';
 
-import { createClassifiedType } from "../actions/classifiedTypesActionCreators";
-
-const defaultAttribute = { type: "text", name: "Name", disabled: true };
-
 class ClassifiedTypeForm extends React.Component {
   constructor(props) {
     super(props);
 
-    const { classifiedType: { name, attributes }, canDelete } = props;
+    const { classifiedType: { name, attributes } } = props;
 
-    this.state = {
-      attributes, name, errorMsg: '', canDelete,
-    };
+    this.state = { name, attributes };
 
-    this.onRemoveAttribute = this.onRemoveAttribute.bind(this);
-    this.onChangeAttribute = this.onChangeAttribute.bind(this);
-    this.onChangeName = this.onChangeName.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.delete = this.delete.bind(this);
-    this.onAddNewAttribute = this.onAddNewAttribute.bind(this);
+    this.handleChangeName = this.handleChangeName.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChangeAttribute = this.handleChangeAttribute.bind(this);
+    this.handleAddAttribute = this.handleAddAttribute.bind(this);
+    this.handleRemoveAttribute = this.handleRemoveAttribute.bind(this);
   }
 
-  onChangeAttribute(id, data) {
+  handleRemoveAttribute(attributeId) {
     let { attributes } = this.state;
 
-    attributes = attributes.map((attribute) => {
-      if (id === attribute.id) {
-        return { ...attribute, ...data };
-      }
-
-      return attribute;
+    attributes = attributes.filter((attribute) => {
+      return attribute.id !== attributeId;
     });
 
     this.setState({ attributes });
   }
 
-  onRemoveAttribute(id) {
+  handleChangeAttribute(attribute) {
     let { attributes } = this.state;
+    const { name, dataType, id } = attribute;
+    
+    attributes = attributes.map((_attribute) => {
+      if (_attribute.id === id) {
+        return { ..._attribute, name, dataType };
+      }
 
-    attributes = attributes.filter((attribute, _id) => _id !== id);
+      return _attribute;
+    });
 
     this.setState({ attributes });
   }
 
-  onChangeName(e) {
+  handleAddAttribute() {
+    const { attributes } = this.state;
+
+    attributes.push({ name: '', dataType: 'text', id: Math.random() });
+
+    this.setState({ attributes });
+  }
+
+  handleChangeName(e) {
     this.setState({ name: e.target.value });
   }
 
-  onAddNewAttribute() {
-    let { attributes } = this.state;
-
-    attributes.push({ name: '', type: 'text', id: Math.random() });
-
-    this.setState({ attributes });
-  }
-
-  onSubmit(e) {
+  handleSubmit(e) {
     e.preventDefault();
+    const { onSave } = this.props;
+    const { name, attributes, id } = this.state;
 
-    const { dispatch } = this.props;
-    const { name, attributes } = this.state;
-
-    const classifiedType = { name, attributes };
-
-    this.setState({ errorMsg: '' });
-
-    dispatch(createClassifiedType(classifiedType))
-      .then(() => {
-        this.setState({ name: '', attributes: [defaultAttribute] });
-      })
-      .catch((error) => {
-        this.setState({ errorMsg: error });
-        console.error(error);
-      });
-  }
-
-  delete(e) {
-    const { id, onRemove } = this.props;
-
-    if (window.confirm("Are you sure you want to remove this Classified Type?")) {
-      onRemove(id);
-    }
+    onSave({ name, attributes, id });
   }
 
   render() {
-    const {
-      attributes, name, errorMsg, canDelete,
-    } = this.state;
+    const { name, attributes } = this.state;
+    const { classifiedType: { id } } = this.props;
 
-    const { id } = this.props;
+    const idInputName = `${id}-input-name`;
 
     return (
       <div className="classified-type-form">
-        {
-          canDelete && (
-            <button onClick={this.delete} type="button" className="close" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          )
-        }
-        <h4 className="my-3">Add a New Type</h4>
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <label htmlFor={`${id}-input-name`}>
+            <label htmlFor={idInputName}>
               Name
             </label>
-            <input onChange={this.onChangeName} id={`${id}-input-name`} className="form-control" type="text" value={name} />
+            <input
+              value={name}
+              onChange={this.handleChangeName}
+              id={idInputName}
+              className="form-control"
+              type="text"
+              required
+            />
           </div>
-          <h5 className="mb-2">Attributes</h5>
-          <GroupOfAttributes
-            attributes={attributes}
-            onAddNewAttribute={this.onAddNewAttribute}
-            onRemoveAttribute={this.onRemoveAttribute}
-            onChangeAttribute={this.onChangeAttribute} />
+          <div className="my-3">
+            <GroupOfAttributes
+              classifiedTypeId={id}
+              attributes={attributes}
+              onChangeAttribute={this.handleChangeAttribute}
+              onAddAttribute={this.handleAddAttribute}
+              onRemoveAttribute={this.handleRemoveAttribute}
+            />
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Save
+          </button>
         </form>
       </div>
     );
   }
 }
 
-ClassifiedTypeForm.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-  classifiedType: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    attributes: PropTypes.instanceOf(Array),
-  }).isRequired,
-  canDelete: PropTypes.bool,
-};
-
 ClassifiedTypeForm.defaultProps = {
-  canDelete: false,
+  classifiedType: {
+    name: '', dataType: 'text', attributes: [], id: 'new-classified-type',
+  },
+  removable: false
 };
 
 export default ClassifiedTypeForm;

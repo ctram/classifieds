@@ -3,48 +3,51 @@ import React from "react";
 
 import AttributeField from "./AttributeField";
 
-
 class GroupOfAttributes extends React.Component {
   constructor(props) {
     super(props);
 
     const { attributes } = props;
 
-    this.state = {
-      attributes,
-    };
+    this.state = { attributes };
+  }
+
+  componentDidUpdate(prevProps) {
+    const { attributes } = this.props;
+
+    if (prevProps.attributes !== attributes) {
+      this.setState({ attributes });
+    }
   }
 
   render() {
+    const {
+      onChangeAttribute, onAddAttribute, onRemoveAttribute
+    } = this.props;
+
     const { attributes } = this.state;
-    const { onChangeAttribute, onRemoveAttribute, onAddNewAttribute } = this.props;
 
-    const domAttributes = attributes.map((attribute) => {
-      const isDefaultAttribute = attribute.name && attribute.name.toLowerCase() === 'name';
 
-      return (
-        <div className="mb-5">
-          <AttributeField
-            attribute={attribute}
-            id={attribute.id}
-            onChange={onChangeAttribute}
-            onRemove={onRemoveAttribute} />
-        </div>
-      );
-    });
+    const domAttributeFields = attributes.map((attribute) => (
+      <AttributeField
+        attribute={attribute}
+        onChange={onChangeAttribute}
+        key={attribute.id}
+        onRemoveAttribute={onRemoveAttribute}
+      />
+    ));
 
     return (
-      <div className="group-of-attributes">
-        <div>
-          {domAttributes.length > 0 && domAttributes || "This Classified Type has not attributes. Go ahead and add one."}
-        </div>
+      <div className="group-of-attributes my-3">
+        {
+          domAttributeFields
+        }
 
-        <button onClick={onAddNewAttribute} type="button" className="btn btn-secondary btn-sm mt-3">
-          New Attribute
+        <button onClick={onAddAttribute} type="button" className="btn btn-secondary">
+          Add Attribute
         </button>
       </div>
     );
   }
 }
-
 export default GroupOfAttributes;

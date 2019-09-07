@@ -3,7 +3,11 @@ import { startSpinner, endSpinner } from "./spinnersActionCreators";
 import { setCurrentAlert } from "./alertsActionCreators";
 import { translateResponseMessage } from "../../../helpers/response-helper";
 
-import { SET_CLASSIFIED_TYPES } from "../constants/constants";
+import { SET_CLASSIFIED_TYPES, SET_NEW_CLASSIFIED_TYPE_DATA } from "../constants/constants";
+
+export function setNewClassifiedTypeData(newClassifiedType) {
+  return { type: SET_NEW_CLASSIFIED_TYPE_DATA, newClassifiedType };
+}
 
 export function setClassifiedTypes(classifiedTypes) {
   return { type: SET_CLASSIFIED_TYPES, classifiedTypes };
@@ -46,12 +50,14 @@ export function createClassifiedType(classifiedType) {
 
     let { attributes } = classifiedType;
 
+    
+
     attributes = attributes.map((attr) => {
-      const { name, type } = attr;
-      return { name, data_type: type };
+      const { name, dataType } = attr;
+      return { name, data_type: dataType };
     });
 
-    return fetchPlus(`${SERVER_DOMAIN}/classified_types`, {
+    return fetchPlus(`${SERVER_DOMAIN}/api/v1/classified_types`, {
       method: "POST",
       body: JSON.stringify({ classified_type: { ...classifiedType, attributes } }),
     })

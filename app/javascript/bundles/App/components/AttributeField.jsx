@@ -5,110 +5,83 @@ class AttributeField extends React.Component {
   constructor(props) {
     super(props);
 
-    const { attribute: { name, type }, disabled, removable } = props;
+    const { attribute: { name, dataType } } = props;
 
-    this.state = {
-      type,
-      name
-    };
+    this.state = { name, dataType };
 
-    this.onChangeName = this.onChangeName.bind(this);
-    this.onChangeSelect = this.onChangeSelect.bind(this);
-    this.remove = this.remove.bind(this);
+    this.handleChangeName = this.handleChangeName.bind(this);
+    this.handleChangeSelect = this.handleChangeSelect.bind(this);
+    this.handleClickRemove = this.handleClickRemove.bind(this);
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      type: prevType,
-      name: prevName,
-      disabled: prevDisabled,
-    } = prevProps;
-    const { type, name, disabled } = this.props;
+    const { attribute } = this.props;
 
-    if (prevType !== type || prevName !== name || prevDisabled !== disabled) {
-      this.setState({ type, name, disabled });
+    if (prevProps.attribute !== attribute) {
+      this.setState({ ...attribute });
     }
   }
 
-  onChangeName(e) {
-    const { onChange, id } = this.props;
+  handleChangeName(e) {
+    const { onChange, attribute } = this.props;
 
-    onChange(id, { name: e.target.value });
+    onChange({ ...attribute, name: e.target.value });
   }
 
-  onChangeSelect(e) {
-    const { onChange, id } = this.props;
+  handleChangeSelect(e) {
+    const { onChange, attribute } = this.props;
 
-    onChange(id, { type: e.target.value });
+    onChange({ ...attribute, dataType: e.target.value });
   }
 
-  remove(e) {
-    const { onRemove, id } = this.props;
+  handleClickRemove() {
+    const { onRemoveAttribute, attribute: { id } } = this.props;
 
-    onRemove(id);
+    onRemoveAttribute(id);
   }
 
   render() {
-    const { type, name, disabled } = this.state;
-
     const { id } = this.props;
+    const { name, dataType } = this.state;
 
-    const domId = `attribute-field-${id}`;
+    const domNameId = `${id}-name`;
+    const domDataTypeId = `${id}-data-type`;
 
     return (
-      <div className="attribute-field">
-        {!disabled && (
-          <button
-            type="button"
-            className="close"
-            aria-label="Close"
-            onClick={this.remove}
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        )}
+      <div className="my-3">
+        <h5>Attribute</h5>
+        <button onClick={this.handleClickRemove} type="button" className="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
         <div className="form-group">
-          <label htmlFor="attribute-name">Name</label>
+          <label htmlFor={domNameId}>
+            Name
+          </label>
           <input
             value={name}
-            onChange={this.onChangeName}
+            onChange={this.handleChangeName}
+            id={domNameId}
+            type="text"
             className="form-control"
-            placeholder="Height"
-            disabled={disabled}
-            id="attribute-name"
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor={domId}>Type</label>
-          <select
-            value={type}
-            onChange={this.onChangeSelect}
-            className="form-control"
-            id={domId}
-            disabled={disabled}
-          >
-            <option value="text">Text</option>
-            <option value="number">Number</option>
+          <label htmlFor={domDataTypeId}>
+            Data Type
+          </label>
+          <select onChange={this.handleChangeSelect} value={dataType} id={domDataTypeId} className="form-control">
+            <option value="text">
+              Text
+            </option>
+            <option value="numeric">
+              Numeric
+            </option>
           </select>
         </div>
       </div>
     );
   }
-}
-
-AttributeField.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired,
-  id: PropTypes.number.isRequired,
-  attribute: PropTypes.shape({
-    name: PropTypes.string,
-    type: PropTypes.string
-  }),
-};
-
-AttributeField.defaultProps = {
-  attribute: { name: '', type: 'text' },
 }
 
 export default AttributeField;

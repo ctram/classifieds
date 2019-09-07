@@ -4,59 +4,24 @@ import React from "react";
 import ApplicationNameFormContainer from "../containers/ApplicationNameFormContainer";
 import ClassifiedTypeFormContainer from "../containers/ClassifiedTypeFormContainer";
 
-import { fetchClassifiedTypes } from "../actions/classifiedTypesActionCreators";
-
 class ApplicationSettingsPage extends React.Component {
   constructor(props) {
     super(props);
 
-    const { classifiedTypes } = props;
-
     this.state = {
-      addNewClassifiedTypeFormVisible: false,
-      classifiedTypes,
-      newClassifiedType: {
-        name: '',
-        attributes: [],
-      },
+      newClassifiedTypeFormVisible: false,
     };
 
-    this.showAddNewClassifiedTypeForm = this.showAddNewClassifiedTypeForm.bind(
-      this,
-    );
-
-    this.onRemoveClassifiedType = this.onRemoveClassifiedType.bind(this);
+    this.onClickAddNewClassifiedType = this.onClickAddNewClassifiedType.bind(this);
   }
 
-  componentDidMount() {
-    const { dispatch } = this.props;
-
-    dispatch(fetchClassifiedTypes()).catch((e) => console.error(e));
-  }
-
-  componentDidUpdate(prevProps) {
-    const { classifiedTypes } = this.props;
-
-    if (prevProps.classifiedTypes !== classifiedTypes) {
-      this.setState({ classifiedTypes });
-    }
-  }
-
-  onRemoveClassifiedType(id) {
-    let { classifiedTypes } = this.state;
-
-    classifiedTypes = classifiedTypes.filter((classifiedType, idx) => id !== idx);
-
-    this.setState({ classifiedTypes });
-  }
-
-  showAddNewClassifiedTypeForm() {
-    this.setState({ addNewClassifiedTypeFormVisible: true });
+  onClickAddNewClassifiedType() {
+    this.setState({ newClassifiedTypeFormVisible: true });
   }
 
   render() {
-    const { addNewClassifiedTypeFormVisible, classifiedTypes, newClassifiedType } = this.state;
     const { webAppSettings } = this.props;
+    const { newClassifiedTypeFormVisible } = this.state;
 
     return (
       <div>
@@ -77,46 +42,23 @@ class ApplicationSettingsPage extends React.Component {
                 Examples: Cat, Dog, Car, Clothing, etc.
               </p>
             </div>
-          </div>
-
-          <div className="my-3">
-            {
-              addNewClassifiedTypeFormVisible && (
-              <div>
-                <ClassifiedTypeFormContainer
-                  id="new-classified-type"
-                  classifiedType={newClassifiedType}
-                  canDelete={false} />
-              </div>
-              )
-            }
-
-            {
-              !addNewClassifiedTypeFormVisible && (
-              <button
-                onClick={this.showAddNewClassifiedTypeForm}
-                className="btn btn-secondary"
-                type="button"
-              >
-                Add New Classified Type
-              </button>
-              )
-            }
+            <div className="my-3">
+              {
+                !newClassifiedTypeFormVisible && (
+                <button onClick={this.onClickAddNewClassifiedType} type="button" className="btn btn-secondary">
+                  Add New Classified Type
+                </button>
+                )
+              }
+              {
+                newClassifiedTypeFormVisible && <ClassifiedTypeFormContainer />
+              }
+            </div>
           </div>
         </div>
       </div>
     );
   }
 }
-
-ApplicationSettingsPage.propTypes = {
-  classifiedTypes: PropTypes.instanceOf(Array),
-  dispatch: PropTypes.func.isRequired,
-  webAppSettings: PropTypes.instanceOf(Object).isRequired,
-};
-
-ApplicationSettingsPage.defaultProps = {
-  classifiedTypes: [],
-};
 
 export default ApplicationSettingsPage;
