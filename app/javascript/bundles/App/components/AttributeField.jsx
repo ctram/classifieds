@@ -5,12 +5,11 @@ class AttributeField extends React.Component {
   constructor(props) {
     super(props);
 
-    const { type, name, disabled } = props;
+    const { attribute: { name, type }, disabled, removable } = props;
 
     this.state = {
-      type: type || "text",
-      name: name || "",
-      disabled: disabled === true,
+      type,
+      name
     };
 
     this.onChangeName = this.onChangeName.bind(this);
@@ -68,7 +67,6 @@ class AttributeField extends React.Component {
             <span aria-hidden="true">&times;</span>
           </button>
         )}
-        <h4>Attribute</h4>
         <div className="form-group">
           <label htmlFor="attribute-name">Name</label>
           <input
@@ -100,12 +98,17 @@ class AttributeField extends React.Component {
 }
 
 AttributeField.propTypes = {
-  type: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
+  attribute: PropTypes.shape({
+    name: PropTypes.string,
+    type: PropTypes.string
+  }),
 };
+
+AttributeField.defaultProps = {
+  attribute: { name: '', type: 'text' },
+}
 
 export default AttributeField;

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import AttributeField from "./AttributeField";
+import GroupOfAttributes from './GroupOfAttributes';
 
 import { createClassifiedType } from "../actions/classifiedTypesActionCreators";
 
@@ -11,25 +11,25 @@ class ClassifiedTypeForm extends React.Component {
   constructor(props) {
     super(props);
 
-    const { name, attributes } = props;
+    const { classifiedType: { name, attributes }, canDelete } = props;
 
     this.state = {
-      attributes, name, errorMsg: '', canDelete: false,
+      attributes, name, errorMsg: '', canDelete,
     };
 
-    this.addAttributeToDOM = this.addAttributeToDOM.bind(this);
     this.onRemoveAttribute = this.onRemoveAttribute.bind(this);
     this.onChangeAttribute = this.onChangeAttribute.bind(this);
     this.onChangeName = this.onChangeName.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.delete = this.delete.bind(this);
+    this.onAddNewAttribute = this.onAddNewAttribute.bind(this);
   }
 
   onChangeAttribute(id, data) {
     let { attributes } = this.state;
 
-    attributes = attributes.map((attribute, idx) => {
-      if (idx === id) {
+    attributes = attributes.map((attribute) => {
+      if (id === attribute.id) {
         return { ...attribute, ...data };
       }
 
@@ -42,13 +42,21 @@ class ClassifiedTypeForm extends React.Component {
   onRemoveAttribute(id) {
     let { attributes } = this.state;
 
-    attributes = attributes.filter((attribute, idx) => idx !== id);
+    attributes = attributes.filter((attribute, _id) => _id !== id);
 
     this.setState({ attributes });
   }
 
   onChangeName(e) {
     this.setState({ name: e.target.value });
+  }
+
+  onAddNewAttribute() {
+    let { attributes } = this.state;
+
+    attributes.push({ name: '', type: 'text', id: Math.random() });
+
+    this.setState({ attributes });
   }
 
   onSubmit(e) {
@@ -71,14 +79,6 @@ class ClassifiedTypeForm extends React.Component {
       });
   }
 
-  addAttributeToDOM() {
-    const { attributes } = this.state;
-
-    attributes.push({ name: "", disabled: false, type: "text" });
-
-    this.setState({ attributes });
-  }
-
   delete(e) {
     const { id, onRemove } = this.props;
 
@@ -92,97 +92,31 @@ class ClassifiedTypeForm extends React.Component {
       attributes, name, errorMsg, canDelete,
     } = this.state;
 
-    let domAttributes = null;
-
-    if (attributes.length !== 0) {
-      domAttributes = attributes.map((attribute, idx) => {
-        const { type, name: attributeName, disabled } = attribute;
-
-        const domAttributeField = (
-          <AttributeField
-            onRemove={this.onRemoveAttribute}
-            onChange={this.onChangeAttribute}
-            type={type}
-            name={attributeName}
-            disabled={disabled}
-            id={idx}
-          />
-        );
-
-        let inner = domAttributeField;
-
-        if (idx !== 0) {
-          inner = (
-            <div>
-              <hr className="my-5"/>
-              {domAttributeField}
-            </div>
-          );
-        }
-
-        return (
-          <div className="my-3" key={idx}>
-            {inner}
-          </div>
-        );
-      });
-    }
+    const { id } = this.props;
 
     return (
       <div className="classified-type-form">
         {
-          canDelete
-          && (
-          <button onClick={this.delete} type="button" className="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          canDelete && (
+            <button onClick={this.delete} type="button" className="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           )
         }
-
-        <form onSubmit={this.onSubmit}>
+        <h4 className="my-3">Add a New Type</h4>
+        <form>
           <div className="form-group">
-            <label htmlFor="classified-model-type">Type</label>
-            <input
-              value={name}
-              onChange={this.onChangeName}
-              className="form-control"
-              id="classified-model-type"
-              placeholder="Cat"
-              required
-            />
+            <label htmlFor={`${id}-input-name`}>
+              Name
+            </label>
+            <input onChange={this.onChangeName} id={`${id}-input-name`} className="form-control" type="text" value={name} />
           </div>
-          {domAttributes && (
-            <div>
-              <hr className="my-5" />
-              {domAttributes}
-            </div>
-          )}
-          {
-            errorMsg && (
-              <div className="d-flex justify-content-center">
-                <div className="alert alert-danger text-center" role="alert">
-                  {errorMsg}
-                </div>
-              </div>
-            )
-          }
-          <hr className="my-5" />
-          <div className="d-flex flex-column align-items-start">
-            <button
-              onClick={this.addAttributeToDOM}
-              type="button"
-              className="btn btn-secondary btn-sm mb-3"
-            >
-              Add Attribute
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary"
-            >
-              Save
-            </button>
-          </div>
-
+          <h5 className="mb-2">Attributes</h5>
+          <GroupOfAttributes
+            attributes={attributes}
+            onAddNewAttribute={this.onAddNewAttribute}
+            onRemoveAttribute={this.onRemoveAttribute}
+            onChangeAttribute={this.onChangeAttribute} />
         </form>
       </div>
     );
@@ -190,15 +124,17 @@ class ClassifiedTypeForm extends React.Component {
 }
 
 ClassifiedTypeForm.propTypes = {
-  name: PropTypes.string,
-  attributes: PropTypes.instanceOf(Array),
   dispatch: PropTypes.func.isRequired,
-  id: PropTypes.number.isRequired,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  classifiedType: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    attributes: PropTypes.instanceOf(Array),
+  }).isRequired,
+  canDelete: PropTypes.bool,
 };
 
 ClassifiedTypeForm.defaultProps = {
-  name: "",
-  attributes: [defaultAttribute],
+  canDelete: false,
 };
 
 export default ClassifiedTypeForm;

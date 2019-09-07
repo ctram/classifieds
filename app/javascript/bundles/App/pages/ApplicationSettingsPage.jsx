@@ -13,8 +13,12 @@ class ApplicationSettingsPage extends React.Component {
     const { classifiedTypes } = props;
 
     this.state = {
-      showClassifiedTypeForm: false,
+      addNewClassifiedTypeFormVisible: false,
       classifiedTypes,
+      newClassifiedType: {
+        name: '',
+        attributes: [],
+      },
     };
 
     this.showAddNewClassifiedTypeForm = this.showAddNewClassifiedTypeForm.bind(
@@ -47,75 +51,58 @@ class ApplicationSettingsPage extends React.Component {
   }
 
   showAddNewClassifiedTypeForm() {
-    this.setState({ showClassifiedTypeForm: true });
+    this.setState({ addNewClassifiedTypeFormVisible: true });
   }
 
   render() {
-    const { showClassifiedTypeForm, classifiedTypes } = this.state;
+    const { addNewClassifiedTypeFormVisible, classifiedTypes, newClassifiedType } = this.state;
     const { webAppSettings } = this.props;
 
-    console.log(classifiedTypes);
-
-    let domClassifiedTypes = null;
-
-    if (classifiedTypes.length > 0) {
-      domClassifiedTypes = classifiedTypes.map((classifiedType, idx) => {
-        const { name, attributes, id } = classifiedType;
-
-        return (
-          <div key={idx}>
-            <hr />
-            <ClassifiedTypeFormContainer
-              id={id}
-              name={name}
-              attributes={attributes}
-              onRemove={this.onRemoveClassifiedType}
-            />
-          </div>
-        );
-      });
-    }
-
     return (
-      <div className="d-flex flex-column align-items-center">
-        <ApplicationNameFormContainer webAppSettings={webAppSettings} />
-        <hr />
-        <div>
-          <h2 className="mb-3">Classified Types</h2>
-          <div className="my-3">
-            <p>
-              A Classified Type represents a class of items.
-            </p>
-            <p>
-              Examples: Cat, Dog, Car, Clothing, etc.
-            </p>
-          </div>
-          {showClassifiedTypeForm && (
-            <div className="my-5 new-classified-type">
-              <ClassifiedTypeFormContainer id="new-classified-type" />
-            </div>
-          )}
+      <div>
+        <h1 className="text-center">Application Settings</h1>
 
-          {
-            !showClassifiedTypeForm && (
+        <div className="d-flex flex-column align-items-start px-5">
+          <ApplicationNameFormContainer webAppSettings={webAppSettings} />
+
+          <hr />
+
+          <div>
+            <h2 className="mb-3">Classified Types</h2>
+            <div className="my-3">
+              <p>
+                A Classified Type represents a class of items.
+              </p>
+              <p>
+                Examples: Cat, Dog, Car, Clothing, etc.
+              </p>
+            </div>
+          </div>
+
+          <div className="my-3">
+            {
+              addNewClassifiedTypeFormVisible && (
+              <div>
+                <ClassifiedTypeFormContainer
+                  id="new-classified-type"
+                  classifiedType={newClassifiedType}
+                  canDelete={false} />
+              </div>
+              )
+            }
+
+            {
+              !addNewClassifiedTypeFormVisible && (
               <button
                 onClick={this.showAddNewClassifiedTypeForm}
-                className="btn btn-primary"
+                className="btn btn-secondary"
                 type="button"
               >
                 Add New Classified Type
               </button>
-            )
-          }
-
-          {
-            domClassifiedTypes && (
-            <div className="classified-types">
-              <hr />
-              {domClassifiedTypes}
-            </div>
-            )
-          }
+              )
+            }
+          </div>
         </div>
       </div>
     );

@@ -27,9 +27,7 @@ class ApplicationNameForm extends React.Component {
     const { webAppSettings } = this.props;
 
     return (
-      <div className="d-flex flex-column align-items-center">
-        <h1 className="my-3">Application Settings</h1>
-
+      <div className="d-flex flex-column">
         <div className="d-flex flex-column align-items-start">
           <div className="my-3">
             <h2 className="my-3">Application Name</h2>
