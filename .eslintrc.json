@@ -23,7 +23,7 @@
     ],
     "rules": {
 	"no-console": "off",
-	"quotes": "off"
+	"quotes": "off",
         "react/no-did-update-set-state": "off"
     }
 }
