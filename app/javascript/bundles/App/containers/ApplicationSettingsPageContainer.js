@@ -1,11 +1,18 @@
 import { connect } from "react-redux";
+
 import ApplicationSettingsPage from "../pages/ApplicationSettingsPage";
 
-const mapStateToProps = (state) => {
-  return {
-    classifiedTypes: state.classifiedTypes.classifiedTypes,
-    webAppSettings: state.webAppSettings,
-  };
-};
+import { fetchClassifiedTypes } from "../actions/classifiedTypesActionCreators";
 
-export default connect(mapStateToProps)(ApplicationSettingsPage);
+const mapStateToProps = (state) => ({
+  classifiedTypes: state.classifiedTypes.classifiedTypes,
+  webAppSettings: state.webAppSettings,
+});
+
+const dispatchToProps = (dispatch) => ({
+  fetchClassifiedTypes: () => {
+    dispatch(fetchClassifiedTypes());
+  },
+});
+
+export default connect(mapStateToProps, dispatchToProps)(ApplicationSettingsPage);

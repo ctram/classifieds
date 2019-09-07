@@ -10,9 +10,15 @@ class ApplicationSettingsPage extends React.Component {
 
     this.state = {
       newClassifiedTypeFormVisible: false,
+      classifiedTypes: []
     };
 
     this.onClickAddNewClassifiedType = this.onClickAddNewClassifiedType.bind(this);
+  }
+
+  componentDidMount() {
+    const { fetchClassifiedTypes } = this.props;
+    fetchClassifiedTypes();
   }
 
   onClickAddNewClassifiedType() {
