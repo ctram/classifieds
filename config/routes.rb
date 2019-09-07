@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   resources :users, only: [:create, :update]
-  resources :classified_types, only: [:create, :index]
 
   patch '/web_app_settings', to: 'web_app_settings#update'
 
