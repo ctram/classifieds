@@ -19,12 +19,14 @@ module ClassifiedsAPI
     resources :classified_types do
       desc 'Return classified_types'
       get do
-        present classified_types: ClassifiedType.all, with: Entities::ClassifiedType
+        present :classified_types, ClassifiedType.all, with: Entities::ClassifiedType
       end
 
       desc 'Create and return a classified_type'
       post do
         name, attributes = params[:classified_type].values_at :name, :attributes
+        attributes ||= []
+        classified_type = nil
 
         ActiveRecord::Base.transaction do
           classified_type = ClassifiedType.create!(name: name)
@@ -36,7 +38,7 @@ module ClassifiedsAPI
           error!({ error: 'classified_type_creation_failure', detail: e }, 422)
         end
 
-        present classified_type: classified_type, with: Entities::ClassifiedType
+        present :classified_type, classified_type, with: Entities::ClassifiedType
       end
     end
   end
