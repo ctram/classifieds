@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ClassifiedsAPI
   class V1 < Grape::API
     version 'v1', using: :path
@@ -30,6 +32,8 @@ module ClassifiedsAPI
           attributes.each do |attr|
             classified_type.classified_type_attributes.create!(attr)
           end
+        rescue StandardError => e
+          error!({ error: 'classified_type_creation_failure', detail: e }, 422)
         end
 
         present classified_type: classified_type, with: Entities::ClassifiedType
