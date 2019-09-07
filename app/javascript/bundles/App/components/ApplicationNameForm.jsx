@@ -1,26 +1,24 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import { updateWebAppSettings } from "../actions/webAppSettingsActionCreators";
-
 class ApplicationNameForm extends React.Component {
   constructor(props) {
     super(props);
 
     this.inputApplicationName = React.createRef();
-    this.updateApplicationName = this.updateApplicationName.bind(this);
+    this.onSubmitApplicationName = this.onSubmitApplicationName.bind(this);
   }
 
-  updateApplicationName(e) {
+  onSubmitApplicationName(e) {
     e.preventDefault();
 
-    const { dispatch } = this.props;
+    const { saveWebAppSettings } = this.props;
 
     const webAppSettings = {
       web_app_title: this.inputApplicationName.current.value,
     };
 
-    dispatch(updateWebAppSettings(webAppSettings));
+    saveWebAppSettings(webAppSettings);
   }
 
   render() {
@@ -31,7 +29,7 @@ class ApplicationNameForm extends React.Component {
         <div className="d-flex flex-column align-items-start">
           <div className="my-3">
             <h2 className="my-3">Application Name</h2>
-            <form onSubmit={this.updateApplicationName}>
+            <form onSubmit={this.onSubmitApplicationName}>
               <div className="form-group">
                 <input
                   id="application-name"
@@ -44,7 +42,7 @@ class ApplicationNameForm extends React.Component {
                 />
               </div>
               <button type="submit" className="btn btn-primary">
-                Update Application Name
+                Save
               </button>
             </form>
           </div>
@@ -60,7 +58,7 @@ ApplicationNameForm.propTypes = {
   webAppSettings: PropTypes.shape({
     web_app_title: PropTypes.string.isRequired,
   }).isRequired,
-  dispatch: PropTypes.func.isRequired,
+  saveWebAppSettings: PropTypes.func.isRequired
 };
 
 export default ApplicationNameForm;

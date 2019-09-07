@@ -9,7 +9,7 @@ export function setWebAppSettings(webAppSettings) {
   return { type: SET_WEB_APP_SETTINGS, webAppSettings };
 }
 
-export function updateWebAppSettings(webAppSettings) {
+export function saveWebAppSettings(webAppSettings) {
   return (dispatch) => {
     dispatch(startSpinner());
 
