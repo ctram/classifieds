@@ -50,8 +50,6 @@ export function createClassifiedType(classifiedType) {
 
     let { attributes } = classifiedType;
 
-    
-
     attributes = attributes.map((attr) => {
       const { name, dataType } = attr;
       return { name, data_type: dataType };
