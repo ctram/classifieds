@@ -25,6 +25,7 @@
     "no-console": "off",
     "quotes": "off",
     "react/no-did-update-set-state": "off",
-    "jsx-a11y/label-has-associated-control": "off"
+    "jsx-a11y/label-has-associated-control": "off",
+    "no-underscore-dangle": "off"
   }
 }
