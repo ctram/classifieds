@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  patch '/web_app_settings', to: 'web_app_settings#update'
 
   root 'statics#index'
 

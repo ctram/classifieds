@@ -12,6 +12,7 @@ const MAP = {
   user_signed_out_error: 'sign out failed',
   authentication_success: 'authenticated',
   authentication_error: 'authentication error',
+  web_app_settings_update_success: 'web app settings updated'
 };
 
 export function translateResponseMessage(message) {
@@ -19,7 +20,7 @@ export function translateResponseMessage(message) {
     return MAP[message];
   }
 
-  console.error('Response message not recognized. You probably need to update the map in "response-helpers"');
+  console.error(`Response message "${message}" not recognized. You probably need to update the map in "response-helpers"`);
 
   return message;
 }

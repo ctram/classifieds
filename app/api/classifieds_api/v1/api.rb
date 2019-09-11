@@ -35,6 +35,7 @@ module ClassifiedsAPI
 
       mount ClassifiedsAPI::V1::Session
       mount ClassifiedsAPI::V1::User
+      mount ClassifiedsAPI::V1::WebAppSetting
     end
   end
 end
