@@ -1,4 +1,4 @@
-import { isJSONResponse } from './response-helper';
+import { translateResponseMessage } from './response-helper';
 
 export default function fetchPlus(url, options = { method: 'GET' }) {
   let timezoneOffset = new Date().getTimezoneOffset();
@@ -7,7 +7,7 @@ export default function fetchPlus(url, options = { method: 'GET' }) {
 
   let headers = {
     'Content-Type': 'application/json',
-    'X-Timezone-Offset': `${sign}${timezoneOffset}`
+    'X-Timezone-Offset': `${sign}${timezoneOffset}`,
   };
 
   if (options.method.toLowerCase() !== 'get') {
@@ -18,26 +18,38 @@ export default function fetchPlus(url, options = { method: 'GET' }) {
     });
   }
 
-  headers =  new Headers(headers);
-
-  options = Object.assign({ headers }, options)
+  headers = new Headers(headers);
 
   let _res;
 
-  return fetch(url, options)
-    .then(res => {
+  return fetch(url, { headers, ...options })
+    .then((res) => {
       _res = res;
 
       if (res.headers.get('content-type').indexOf('application/json') !== -1) {
         return res.json();
       }
 
-      throw(res.statusText);
+      throw (res.statusText);
     })
-    .then(json => {
-      return { json, res: _res };
+    .then((json) => {
+      const {
+        message, detail, error
+      } = json;
+
+      debugger
+
+      let translatedMessage = null;
+
+      if (message) {
+        translatedMessage = translateResponseMessage(message);
+      }
+
+      return {
+        error, detail, message: translatedMessage, json, res: _res, status: _res.status,
+      };
     })
-    .catch(e => {
-      throw(e);
+    .catch((e) => {
+      throw (e);
     });
 }
