@@ -3,7 +3,7 @@ import React from "react";
 
 import SignInForm from "../containers/SignInFormContainer";
 
-export default class SignIn extends React.Component {
+export default class SignInPage extends React.Component {
   render() {
     const headerTxt = this.props.type === "sign-up" ? "Sign Up" : "Sign In";
     const { type } = this.props;
