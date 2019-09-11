@@ -10,6 +10,8 @@ const MAP = {
   user_sign_in_success: 'user signed in',
   user_sign_out_success: 'successfully signed out',
   user_signed_out_error: 'sign out failed',
+  authentication_success: 'authenticated',
+  authentication_error: 'authentication error',
 };
 
 export function translateResponseMessage(message) {
