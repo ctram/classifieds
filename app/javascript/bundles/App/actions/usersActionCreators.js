@@ -41,7 +41,7 @@ export function signUp(email, password) {
   return (dispatch) => {
     dispatch(startSpinner());
 
-    return fetchPlus(`${SERVER_DOMAIN}/users`, {
+    return fetchPlus(`${SERVER_DOMAIN}/api/v1/users`, {
       method: 'POST',
       body: JSON.stringify({ user: { email, password } }),
     })
@@ -117,24 +117,17 @@ export function updateUser(currentUser, attrs, attributeType) {
 
     const attrType = `${attributeType[0].toUpperCase()}${attributeType.slice(1, attributeType.length)}`;
 
-    return fetchPlus(`${SERVER_DOMAIN}/users/${currentUser.id}`, {
+    return fetchPlus(`${SERVER_DOMAIN}/api/v1/users/${currentUser.id}`, {
       method: 'PATCH',
       body: JSON.stringify({ user: attrs }),
     })
-      .then(({ json, res }) => {
-        const { errors } = json;
-        const message = translateResponseMessage(json.message);
-
-        if (res.status === 200) {
+      .then(({ json, message, status, detail }) => {
+        if (status === 200) {
           dispatch(setCurrentUser(Object.assign(currentUser, json.user)));
           return dispatch(setCurrentAlert('success', `${attrType} updated.`));
         }
 
-        if (errors) {
-          throw (errors);
-        }
-
-        throw (message);
+        throw (detail || message);
       })
       .catch((e) => {
         dispatch(setCurrentAlert('danger', e));
