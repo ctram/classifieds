@@ -60,19 +60,22 @@ export function createClassifiedType(classifiedType) {
       body: JSON.stringify({ classified_type: { ...classifiedType, attributes } }),
     })
       .then(({ json, res }) => {
-        const { errors } = json;
+        const { error, detail } = json;
 
-        const message = translateResponseMessage(json.message);
+        const message = translateResponseMessage(error);
 
         if (res.status === 201) {
           return dispatch(fetchClassifiedTypes());
         }
 
-        if (errors) {
-          throw errors;
+        if (error) {
+          throw error;
         }
 
         throw message;
+      })
+      .catch(e => {
+        
       })
       .finally(() => {
         dispatch(endSpinner());
