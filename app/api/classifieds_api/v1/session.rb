@@ -8,7 +8,7 @@ module ClassifiedsAPI
           authenticate!
 
           present :user, current_user, with: Entities::User
-          present :message, 'user_signed_in'
+          present :message, 'user_sign_in_success'
         end
 
         post do
