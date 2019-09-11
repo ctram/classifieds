@@ -13,14 +13,14 @@ export function signIn(email, password) {
   return (dispatch) => {
     dispatch(startSpinner());
 
-    return fetchPlus(`${SERVER_DOMAIN}/sessions`, {
+    return fetchPlus(`${SERVER_DOMAIN}/api/v1/sessions`, {
       method: 'POST',
       body: JSON.stringify({ user: { email, password } }),
     })
-      .then(({ json, res }) => {
-        const message = translateResponseMessage(json.message);
-
-        if (res.status === 200) {
+      .then(({
+        json, message, status,
+      }) => {
+        if (status === 200) {
           dispatch(setCurrentUser(json.user));
           return dispatch(setCurrentAlert('success', message));
         }
@@ -45,9 +45,7 @@ export function signUp(email, password) {
       method: 'POST',
       body: JSON.stringify({ user: { email, password } }),
     })
-      .then(({ json, res }) => {
-        const message = translateResponseMessage(json.message);
-
+      .then(({ res, message }) => {
         if (res.status === 201) {
           return dispatch(setCurrentAlert('success', message));
         }
@@ -68,13 +66,11 @@ export function signOut() {
   return (dispatch) => {
     dispatch(startSpinner());
 
-    return fetchPlus(`${SERVER_DOMAIN}/sessions`, {
+    return fetchPlus(`${SERVER_DOMAIN}/api/v1/sessions`, {
       method: 'DELETE',
     })
-      .then(({ json, res }) => {
-        const message = translateResponseMessage(json.message);
-
-        if (res.status === 200) {
+      .then(({ status, message }) => {
+        if (status === 200) {
           dispatch(setCurrentAlert('success', message));
           return dispatch(setCurrentUser(null));
         }
@@ -95,14 +91,16 @@ export function authenticateUser() {
   return (dispatch) => {
     dispatch(startSpinner());
 
-    return fetchPlus(`${SERVER_DOMAIN}/sessions`)
-      .then(({ json, res }) => {
+    return fetchPlus(`${SERVER_DOMAIN}/api/v1/sessions`)
+      .then(({ json }) => {
         const { user } = json;
 
         if (user) {
           dispatch(setCurrentUser(user));
           return Promise.resolve(user);
         }
+
+        throw Error('unauthorized');
       })
       .catch((e) => {
         console.error(e);
@@ -117,7 +115,7 @@ export function updateUser(currentUser, attrs, attributeType) {
   return (dispatch) => {
     dispatch(startSpinner());
 
-    attributeType = `${attributeType[0].toUpperCase()}${attributeType.slice(1, attributeType.length)}`;
+    const attrType = `${attributeType[0].toUpperCase()}${attributeType.slice(1, attributeType.length)}`;
 
     return fetchPlus(`${SERVER_DOMAIN}/users/${currentUser.id}`, {
       method: 'PATCH',
@@ -129,7 +127,7 @@ export function updateUser(currentUser, attrs, attributeType) {
 
         if (res.status === 200) {
           dispatch(setCurrentUser(Object.assign(currentUser, json.user)));
-          return dispatch(setCurrentAlert('success', `${attributeType} updated.`));
+          return dispatch(setCurrentAlert('success', `${attrType} updated.`));
         }
 
         if (errors) {
