@@ -8,7 +8,7 @@ class AlertBar extends React.Component {
   render() {
     let { alertType, message } = this.props;
 
-    if (message === null) {
+    if (message === null || message === '') {
       return null;
     }
 
@@ -50,8 +50,12 @@ AlertBar.propTypes = {
   message: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.string),
-    PropTypes.object,
-  ]).isRequired,
+    PropTypes.object
+  ])
+};
+
+AlertBar.defaultProps = {
+  message: ''
 };
 
 export default AlertBar;
