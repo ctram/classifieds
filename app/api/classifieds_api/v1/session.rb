@@ -13,10 +13,10 @@ module ClassifiedsAPI
 
         post do
           email, password = params[:user].values_at :email, :password
-          user = User.find_by_email(email)
+          user = ::User.find_by_email(email)
 
-          unless user && user.authenticate(password)
-            error!('unauthorized', 401)
+          unless user&.authenticate(password)
+            error!({ error: 'unauthorized', message: 'authentication_error' }, 401)
           end
 
           login(user)
