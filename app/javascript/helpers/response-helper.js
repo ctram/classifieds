@@ -12,7 +12,8 @@ const MAP = {
   user_signed_out_error: 'sign out failed',
   authentication_success: 'authenticated',
   authentication_error: 'authentication error',
-  web_app_settings_update_success: 'web app settings updated'
+  web_app_settings_update_success: 'web app settings updated',
+  classified_type_creation_error: 'error creating classified type'
 };
 
 export function translateResponseMessage(message) {
