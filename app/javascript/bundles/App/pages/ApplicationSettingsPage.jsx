@@ -18,7 +18,7 @@ class ApplicationSettingsPage extends React.Component {
 
   componentDidMount() {
     const { fetchClassifiedTypes } = this.props;
-    fetchClassifiedTypes();
+    // fetchClassifiedTypes();
   }
 
   onClickAddNewClassifiedType() {
