@@ -1,17 +1,15 @@
 const MAP = {
   email_already_taken: 'email already taken',
-  user_created: 'user created successfully',
+  user_creation_success: 'user created successfully',
   user_creation_error: 'user creation failed',
   action_not_allowed_for_user: 'action now allowed for user',
   incorrect_password: 'incorrect password',
   user_update_error: 'user could not update',
-  user_update_successful: 'user update successful',
+  user_update_success: 'user update successful',
   incorrect_email_or_password: 'incorrect email or password',
-  session_creation_successful: 'sign in successful',
-  user_not_signed_in: 'user not signed in',
-  user_signed_in: 'user signed in',
-  user_sign_out_successful: 'successfully signed out',
-  user_sign_out_error: 'sign out failed',
+  user_sign_in_success: 'user signed in',
+  user_sign_out_success: 'successfully signed out',
+  user_signed_out_error: 'sign out failed',
 };
 
 export function translateResponseMessage(message) {
