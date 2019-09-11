@@ -30,19 +30,17 @@ export default function fetchPlus(url, options = { method: 'GET' }) {
         return res.json();
       }
 
-      throw (res.statusText);
+      throw (Error('Response from server should be JSON.'));
     })
     .then((json) => {
       const {
-        message, detail, error
+        message, detail, error,
       } = json;
-
-      debugger
 
       let translatedMessage = null;
 
-      if (message) {
-        translatedMessage = translateResponseMessage(message);
+      if (message || error) {
+        translatedMessage = translateResponseMessage(message || error);
       }
 
       return {
