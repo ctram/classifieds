@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import GroupOfAttributes from './GroupOfAttributes';
+import AlertBar from './AlertBar';
 
 class ClassifiedTypeForm extends React.Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class ClassifiedTypeForm extends React.Component {
 
     const { classifiedType: { name, attributes } } = props;
 
-    this.state = { name, attributes };
+    this.state = { name, attributes, alert: { alertType: null, alertMessage: null } };
 
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,9 +22,7 @@ class ClassifiedTypeForm extends React.Component {
   handleRemoveAttribute(attributeId) {
     let { attributes } = this.state;
 
-    attributes = attributes.filter((attribute) => {
-      return attribute.id !== attributeId;
-    });
+    attributes = attributes.filter((attribute) => attribute.id !== attributeId);
 
     this.setState({ attributes });
   }
@@ -31,7 +30,7 @@ class ClassifiedTypeForm extends React.Component {
   handleChangeAttribute(attribute) {
     let { attributes } = this.state;
     const { name, dataType, id } = attribute;
-    
+
     attributes = attributes.map((_attribute) => {
       if (_attribute.id === id) {
         return { ..._attribute, name, dataType };
@@ -60,11 +59,14 @@ class ClassifiedTypeForm extends React.Component {
     const { onSave } = this.props;
     const { name, attributes, id } = this.state;
 
-    onSave({ name, attributes, id });
+    onSave({ name, attributes, id })
+      .catch((error) => {
+        this.setState({ alert: { alertType: 'danger', alertMessage: error } });
+      });
   }
 
   render() {
-    const { name, attributes } = this.state;
+    const { name, attributes, alert: { alertType, alertMessage } } = this.state;
     const { classifiedType: { id } } = this.props;
 
     const idInputName = `${id}-input-name`;
@@ -94,6 +96,10 @@ class ClassifiedTypeForm extends React.Component {
               onRemoveAttribute={this.handleRemoveAttribute}
             />
           </div>
+          {
+            alertMessage && <AlertBar alertType={alertType} message={alertMessage} />
+          }
+
           <button type="submit" className="btn btn-primary">
             Save
           </button>
@@ -107,7 +113,7 @@ ClassifiedTypeForm.defaultProps = {
   classifiedType: {
     name: '', dataType: 'text', attributes: [], id: 'new-classified-type',
   },
-  removable: false
+  removable: false,
 };
 
 export default ClassifiedTypeForm;
