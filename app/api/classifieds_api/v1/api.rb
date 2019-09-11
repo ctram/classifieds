@@ -25,7 +25,7 @@ module ClassifiedsAPI
         end
 
         def current_user
-          @current_user = User.find_by_id(session[:user_id])
+          @current_user = ::User.find_by_id(session[:user_id])
         end
 
         def authenticate!
@@ -34,6 +34,7 @@ module ClassifiedsAPI
       end
 
       mount ClassifiedsAPI::V1::Session
+      mount ClassifiedsAPI::V1::User
     end
   end
 end
