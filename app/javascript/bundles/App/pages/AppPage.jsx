@@ -14,6 +14,7 @@ import UserPage from "./UserPage";
 import ApplicationSettingsPageContainer from "../containers/ApplicationSettingsPageContainer";
 import Spinner from "../components/Spinner";
 import Dashboard from "../components/Dashboard";
+import HomePage from "./HomePage";
 
 class App extends React.Component {
   constructor(props) {
@@ -41,42 +42,45 @@ class App extends React.Component {
 
     const { attemptedAuthentication } = this.state;
 
+    const domSignedOutRoutes = (
+      <div>
+        <Route path="/sign-in" component={SignInPage} />
+        <Route
+          path="/sign-up"
+          render={() => <SignInPage type="sign-up" />}
+        />
+      </div>
+    );
+
+    const domSignedInRoutes = (
+      <div>
+        <Route exact path="/user-settings" component={UserPage} />
+        <Route
+          exact
+          path="/application-settings"
+          component={ApplicationSettingsPageContainer}
+        />
+      </div>
+    );
+
     return (
       <Router>
         {showSpinner && <Spinner />}
+
         <NavBarContainer />
-        <div className="py-5">
-          {alert && (
+
+        <div className="py-5 px-3">
+          {alert && alert.message && (
             <div className="mb-3">
               <AlertBar alertType={alert.alertType} message={alert.message} />
             </div>
           )}
-          <Switch>
-            <Route path="/sign-in" component={SignInPage} />
-            <Route
-              path="/sign-up"
-              render={() => <SignInPage type="sign-up" />}
-            />
-            {currentUser && (
-              <Route exact path="/user-settings" component={UserPage} />
-            )}
-            {currentUser && (
-              <Route
-                exact
-                path="/application-settings"
-                component={ApplicationSettingsPageContainer}
-              />
-            )}
-            {currentUser && <Dashboard />}
-            {// don't show 404 pages until client at least tried to authenticate,
-            // once authenticate attempt has concluded, we'll know what urls should
-            // be considered 404s
-            attemptedAuthentication && (
-              <Route path="/" component={MissingEntityPage} />
-            )
-}
-          </Switch>
+
+          { !currentUser && domSignedOutRoutes}
+          { currentUser && domSignedInRoutes}
+          <Route exact path="/" component={HomePage} />
         </div>
+
       </Router>
     );
   }
