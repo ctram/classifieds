@@ -1,7 +1,6 @@
 class StaticsController < ApplicationController
   layout 'statics'
 
-  skip_before_action :verify_user_logged_in, only: [:sign_in]
 
   def index
   end
