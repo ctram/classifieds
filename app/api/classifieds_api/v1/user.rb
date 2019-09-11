@@ -3,7 +3,16 @@
 module ClassifiedsAPI
   module V1
     class User < ClassifiedsAPI::V1::API
+
       resources :users do
+        before do
+          authenticate!
+        end
+
+        get do
+          present :users, ::User.all, with: Entities::User
+        end
+
         post do
           email, password = params[:user].values_at :email, :password
           user = ::User.find_by_email(email)
@@ -22,7 +31,7 @@ module ClassifiedsAPI
 
         patch ':id' do
           user_id = params[:id].to_i
-          
+
           if user_id != current_user.id && current_user.role != 'admin'
             error!('unauthorized', 401)
           end
