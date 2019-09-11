@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import { connect } from 'react-redux';
 import { updateUser } from '../actions/usersActionCreators';
 import { setCurrentAlert } from '../actions/alertsActionCreators';
 
-import { connect } from 'react-redux';
 
 class UserPage extends React.Component {
   constructor(props) {
@@ -37,8 +37,8 @@ class UserPage extends React.Component {
 
     const attrs = {
       current_password: currentPassword,
-      new_password: newPassword1
-    }
+      new_password: newPassword1,
+    };
 
     return dispatch(updateUser(currentUser, attrs, 'password'))
       .then(() => {
@@ -46,7 +46,7 @@ class UserPage extends React.Component {
         this.inputNewPassword1.current.value = '';
         this.inputNewPassword2.current.value = '';
       })
-      .catch(e => console.error(e));
+      .catch((e) => console.error(e));
   }
 
   submitEmail(e) {
@@ -60,92 +60,96 @@ class UserPage extends React.Component {
     }
 
     const attrs = {
-      email: newEmail
+      email: newEmail,
     };
 
     return dispatch(updateUser(currentUser, attrs, 'email'))
       .then(() => {
         this.inputNewEmail.current.value = '';
       })
-      .catch(e => console.error(e));
+      .catch((e) => console.error(e));
   }
 
   render() {
     const { currentUser } = this.props;
 
-    return <div className="d-flex flex-column align-items-center">
-      <h1 className="my-3">Settings</h1>
+    return (
+      <div className="d-flex flex-column align-items-center">
+        <h1 className="my-3">Settings</h1>
 
-      <div className="d-flex flex-column align-items-start">
-        <div className="change-password my-3">
-          <h2 className="my-3">Change Password</h2>
-          <form onSubmit={this.submitPassword}>
-            <div className="form-group">
-              <label htmlFor="current-password">Current Password</label>
-              <input
-                id="current-password"
-                type="password"
-                className="form-control"
-                placeholder="Current Password"
-                ref={this.inputCurrentPassword}
-                required />
-            </div>
-            <div className="form-group">
-              <label htmlFor="new-password">New Password</label>
-              <input
-                id="new-password"
-                type="password"
-                className="form-control"
-                placeholder="New Password"
-                ref={this.inputNewPassword1}
-                required />
-            </div>
-            <div className="form-group">
-              <label htmlFor="confirm-new-password">Confirm New Password</label>
-              <input
-                id="confirm-new-password"
-                type="password"
-                className="form-control"
-                placeholder="Confirm New Password"
-                ref={this.inputNewPassword2}
-                required />
-            </div>
-            <button type="submit" className="btn btn-primary">
+        <div className="d-flex flex-column align-items-start">
+          <div className="change-password my-3">
+            <h2 className="my-3">Change Password</h2>
+            <form onSubmit={this.submitPassword}>
+              <div className="form-group">
+                <label htmlFor="current-password">Current Password</label>
+                <input
+                  id="current-password"
+                  type="password"
+                  className="form-control"
+                  placeholder="Current Password"
+                  ref={this.inputCurrentPassword}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="new-password">New Password</label>
+                <input
+                  id="new-password"
+                  type="password"
+                  className="form-control"
+                  placeholder="New Password"
+                  ref={this.inputNewPassword1}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="confirm-new-password">Confirm New Password</label>
+                <input
+                  id="confirm-new-password"
+                  type="password"
+                  className="form-control"
+                  placeholder="Confirm New Password"
+                  ref={this.inputNewPassword2}
+                  required
+                />
+              </div>
+              <button type="submit" className="btn btn-primary">
               Change Password
-            </button>
-          </form>
-        </div>
-
-        <div className="change-username my-3">
-          <h2 className="my-3">Change Email</h2>
-          <div className="my-3">
-            <span className="font-weight-bold mr-1">Current Email:</span>
-            <span>{currentUser.email}</span>
+              </button>
+            </form>
           </div>
-          <form onSubmit={this.submitEmail}>
-            <div className="form-group">
-              <label>New Email</label>
-              <input
-                type="email"
-                className="form-control"
-                placeholder="New email"
-                ref={this.inputNewEmail}
-                required />
+
+          <div className="change-username my-3">
+            <h2 className="my-3">Change Email</h2>
+            <div className="my-3">
+              <span className="font-weight-bold mr-1">Current Email:</span>
+              <span>{currentUser.email}</span>
             </div>
-            <button type="submit" className="btn btn-primary">
+            <form onSubmit={this.submitEmail}>
+              <div className="form-group">
+                <label>New Email</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="New email"
+                  ref={this.inputNewEmail}
+                  required
+                />
+              </div>
+              <button type="submit" className="btn btn-primary">
               Change Email
-            </button>
-          </form>
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>;
+    );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    currentUser: state.users.currentUser
-  }
-};
+const mapStateToProps = (state) => ({
+  currentUser: state.users.currentUser,
+});
 
 export default connect(mapStateToProps)(UserPage);
