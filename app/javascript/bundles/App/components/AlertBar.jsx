@@ -8,6 +8,10 @@ class AlertBar extends React.Component {
   render() {
     let { alertType, message } = this.props;
 
+    if (message === null) {
+      return null;
+    }
+
     if (ALERT_TYPES.indexOf(alertType) === -1) {
       alertType = 'primary';
       console.warn(`Alert type "${alertType}" is not recognized. Defaulting to type "primary".`);
@@ -15,9 +19,12 @@ class AlertBar extends React.Component {
 
     if (Object.getPrototypeOf(message) === Object.prototype) {
       message = parseErrors(message).reduce((acc, el) => {
-        acc.push(<li key={el}>
-          {el}
-        </li>);
+        acc.push(
+          <li key={el}>
+            {el}
+          </li>,
+        );
+
         return acc;
       }, []);
 
