@@ -21,15 +21,14 @@ export function fetchClassifiedTypes() {
       method: "GET",
     })
       .then(({ json, res }) => {
-        const { errors } = json;
-        const message = translateResponseMessage(json.message);
+        const { error, message } = json;
 
         if (res.status === 200) {
           return dispatch(setClassifiedTypes(json.classified_types));
         }
 
-        if (errors) {
-          throw errors;
+        if (error) {
+          throw error;
         }
 
         throw message;
@@ -75,7 +74,7 @@ export function createClassifiedType(classifiedType) {
         throw message;
       })
       .catch(e => {
-        
+
       })
       .finally(() => {
         dispatch(endSpinner());
